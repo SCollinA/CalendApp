@@ -8,7 +8,7 @@ class CalendApp extends Component {
     return (
       <ApolloProvider client={client}>
         <div className="CalendApp">
-        <p>hello</p>
+          <p>hello</p>
         </div>
       </ApolloProvider>
     );
