@@ -4,46 +4,48 @@ import { client } from './apollo/client.js'
 import './CalendApp.css'
 import { Header } from './header/Header.js';
 import { Calendar } from './calendar/Calendar.js';
-import { About } from './header/About.js';
-import { UserForm } from './header/UserForm.js';
-import { LoginForm } from './header/LoginForm.js';
+import { About } from './About.js';
+import { UserForm } from './profile/UserForm.js';
 
 export const AppContext = React.createContext({})
 
 class CalendApp extends Component {
   constructor(props) {
     super(props)
+
+    this.login = user => this.setState({
+      user,
+      isLoggedIn: true
+    })
     
+    this.logout = () => this.setState({
+      user: {},
+      isLoggedIn: false
+    })
+
     this.toggleAbout = () => this.setState({
       isAboutVisible: !this.state.isAboutVisible,
       isCalendarVisible: this.state.isAboutVisible,
-      isUserFormVisible: false,
+      isProfileVisible: false,
       isLoginFormVisible: false,
     })
   
-    this.toggleUserForm = () => this.setState({
-      isUserFormVisible: !this.state.isUserFormVisible,
-      isCalendarVisible: this.state.isUserFormVisible,
+    this.toggleProfile = () => this.setState({
+      isProfileVisible: !this.state.isProfileVisible,
+      isCalendarVisible: this.state.isProfileVisible,
       isAboutVisible: false,
-      isLoginFormVisible: false,
     })
   
-    this.toggleLoginForm = () => this.setState({
-      isLoginFormVisible: !this.state.isLoginFormVisible,
-      isCalendarVisible: this.state.isLoginFormVisible,
-      isAboutVisible: false,
-      isUserFormVisible: false,
-    })
-
     this.state = {
       user: {},
+      isLoggedIn: false,
+      login: this.login,
+      logout: this.logout,
       isAboutVisible: false,
-      isUserFormVisible: false,
-      isLoginFormVisible: false,
+      isProfileVisible: false,
       isCalendarVisible: true,
       toggleAbout: this.toggleAbout,
-      toggleUserForm: this.toggleUserForm,
-      toggleLoginForm: this.toggleLoginForm,
+      toggleProfile: this.toggleProfile,
     }
   }
 
@@ -53,8 +55,7 @@ class CalendApp extends Component {
     const { 
       isCalendarVisible,
       isAboutVisible,
-      isUserFormVisible,
-      isLoginFormVisible,
+      isProfileVisible,
      } = this.state
     return (
       <ApolloProvider client={client}>
@@ -67,10 +68,8 @@ class CalendApp extends Component {
               <Calendar/>}
             {isAboutVisible && 
               <About/>}
-            {isUserFormVisible &&
+            {isProfileVisible &&
               <UserForm/>}
-            {isLoginFormVisible &&
-              <LoginForm/>}
           </div>
         </AppContext.Provider>
       </ApolloProvider>
