@@ -7,7 +7,7 @@ export const UserForm = () => (
             <div className='UserForm'
                 onClick={toggleUserForm}
             >
-                <p>component</p>
+                <p>user form</p>
             </div>
         )}
     </AppContext.Consumer>
