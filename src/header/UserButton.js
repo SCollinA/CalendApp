@@ -1,7 +1,9 @@
 import React from 'react'
 
-export default () => (
-    <div className=''>
-        <p>button</p>
+export default ({ showUserForm }) => (
+    <div className='UserButton'
+        onClick={showUserForm}
+    >
+        <p>Welcome, User</p>
     </div>
 )

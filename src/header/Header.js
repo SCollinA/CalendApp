@@ -19,6 +19,14 @@ export default class Header extends React.Component {
     _toggleAbout = () => this.setState({
         isAboutVisible: !this.state.isAboutVisible
     })
+   
+    _toggleUserForm = () => this.setState({
+        isUserFormVisible: !this.state.isUserFormVisible
+    })
+   
+    _toggleLoginForm = () => this.setState({
+        isLoginVisible: !this.state.isLoginFormVisible
+    })
 
     render() {
         const {
@@ -36,18 +44,18 @@ export default class Header extends React.Component {
                         showAbout={this._toggleAbout}
                     />}
                 {(isUserFormVisible &&
-                    <UserForm/>) ||
+                    <UserForm
+                        hideUserForm={this._toggleUserForm}
+                    />) ||
                     <UserButton
-                        showUserForm={() => this.setState({
-                            isUserFormVisible: !this.state.isUserFormVisible
-                        })}
+                        showUserForm={this._toggleUserForm}
                     />}
                 {(isLoginFormVisible &&
-                    <LoginForm/>) ||
+                    <LoginForm
+                        hideLoginForm={this._toggleLoginForm}
+                    />) ||
                     <LoginButton
-                        showLoginForm={() => this.setState({
-                            isLoginFormVisible: !this.state.isLoginFormVisible
-                        })}
+                        showLoginForm={this._toggleLoginForm}
                     />}
             </div>
         )

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ApolloProvider } from 'react-apollo'
 import { client } from './apollo/client.js'
-import './App.css'
+import './CalendApp.css'
 import Header from './header/Header.js';
 import Calendar from './calendar/Calendar.js';
 
