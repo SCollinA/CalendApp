@@ -1,5 +1,5 @@
 import React from 'react'
-import { AppContext, GET_USER } from '../CalendApp'
+import { AppContext } from '../CalendApp'
 import { Mutation, Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import { LOGIN } from './LoginForm';
@@ -7,18 +7,20 @@ import { LOGIN } from './LoginForm';
 export const UserForm = () => (
     <AppContext.Consumer>
         {({ user }) => (
-            <Mutation mutation={LOGIN}>
+            <Mutation mutation={LOGIN}
+                fetchPolicy={'no-cache'}
+            >
                 {(login, { data, loading, error }) => (
                     <Mutation mutation={UPDATE_USER}
                         update={(cache, { data: { updateUser }, loading, error }) => {
                             const cachedUser = cache.readQuery({
-                                query: GET_USER,
+                                query: LOGIN,
                                 variables: {
                                     _id: updateUser._id
-                                }
+                                },
                             })
                             cache.writeQuery({
-                                query: GET_USER,
+                                query: LOGIN,
                                 variables: {
                                     _id: updateUser._id
                                 },
@@ -41,15 +43,18 @@ export const UserForm = () => (
                                 login({
                                     variables: {
                                         user: {
-                                            ...user,
+                                            name: user.name,
                                             pwhash: event.target.currentPassword.value,
                                         }
                                     }
                                 })
-                                .then(({ login: { token }}) => {
+                                .then(({ data: { login: { token }}}) => {
                                     token && updateUser({
                                         variables: {
-                                            oldUser: user,
+                                            oldUser: {
+                                                // only used to find user
+                                                _id: user._id
+                                            },
                                             newUser,
                                         }
                                     })
