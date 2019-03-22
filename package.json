@@ -9,10 +9,11 @@
     "apollo-link-error": "^1.1.10",
     "apollo-link-http": "^1.5.14",
     "graphql": "^14.1.1",
-    "react": "^16.8.4",
+    "graphql-tag": "^2.10.1",
+    "react": "^16.8.5",
     "react-apollo": "^2.5.2",
-    "react-dom": "^16.8.4",
-    "react-scripts": "2.1.8",
+    "react-dom": "^16.8.5",
+    "react-scripts": "^2.1.8",
     "typescript": "^3.3.4000"
   },
   "scripts": {

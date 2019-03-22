@@ -3,28 +3,28 @@ import { AppContext } from '../CalendApp'
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag'
 
-export const LoginForm = ({ showRegister }) => (
+export const RegisterForm = ({ showLogin }) => (
     <AppContext.Consumer>
         {({ login }) => (
-            <Mutation mutation={LOGIN}
-                onCompleted={({ login: { token, user }}) => {
+            <Mutation mutation={REGISTER}
+                onCompleted={({ addUser: { token, user }}) => {
                     localStorage.setItem('auth-token', token)
                     login(user)
                 }}
                 onError={err => window.alert(err.message)}
             >
-                {(loginMutation, { data, loading, error }) => (
-                    <form className='LoginForm'
+                {(registerMutation, { data, loading, error }) => (
+                    <form className='RegisterForm'
                         onSubmit={event => {
                             event.preventDefault()
                             const user = {
                                 name: event.target.name.value,
                                 pwhash: event.target.password.value
                             }
-                            loginMutation({
+                            registerMutation({
                                 variables: {
                                     user
-                                }
+                                },
                             })
                         }}
                     >
@@ -34,10 +34,13 @@ export const LoginForm = ({ showRegister }) => (
                         <label>password
                             <input type='password' name='password' placeholder='password'/>
                         </label>
-                        <label>submit
-                            <input type='submit' value='login'/>
+                        <label>password
+                            <input type='password' name='passwordConfirm' placeholder='confirm password'/>
                         </label>
-                        <input type='button' onClick={showRegister} value='register'/>
+                        <label>submit
+                            <input type='submit' value='register'/>
+                        </label>
+                        <input type='button' onClick={showLogin} value='login'/>
                     </form>
                 )}
             </Mutation>
@@ -45,9 +48,9 @@ export const LoginForm = ({ showRegister }) => (
     </AppContext.Consumer>
 )
 
-const LOGIN = gql`
-mutation Login($user: UserInput) {
-    login(user: $user) {
+const REGISTER = gql`
+mutation Register($user: UserInput) {
+    addUser(user: $user) {
         token
         user {
             _id
