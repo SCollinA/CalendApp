@@ -7,7 +7,7 @@ export const UserButton = () => (
             <div className='UserButton'
                 onClick={toggleProfile}
             >
-                <p>{isLoggedIn ? `Welcome, ${user.name}` : 'Welcome, Guest'}</p>
+                <p>{isLoggedIn ? `welcome, ${user.name}` : 'welcome, guest'}</p>
             </div>
         )}
     </AppContext.Consumer>

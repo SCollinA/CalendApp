@@ -7,7 +7,7 @@ export const LogoutButton = () => (
             <div className='LogoutButton'
                 onClick={logout}
             >
-                <p>Login/Logout</p>
+                <p>logout</p>
             </div>
         )}
     </AppContext.Consumer>

@@ -1,6 +1,5 @@
 import React from 'react'
 import { AppContext } from '../CalendApp'
-import { LogoutButton } from './LogoutButton'
 
 export const UserForm = () => (
     <AppContext.Consumer>

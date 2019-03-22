@@ -7,7 +7,7 @@ export const AboutButton = () => (
             <div className='AboutButton'
                 onClick={toggleAbout}
             >
-                <h1>CalendApp</h1>
+                <h1>calendapp</h1>
             </div>
         )}
     </AppContext.Consumer>
