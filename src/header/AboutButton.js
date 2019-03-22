@@ -1,7 +1,9 @@
 import React from 'react'
 
-export default () => (
-    <div className=''>
-        <p>button</p>
+export default ({ showAbout }) => (
+    <div className='AboutButton'
+        onClick={showAbout}
+    >
+        <h1>CalendApp</h1>
     </div>
 )

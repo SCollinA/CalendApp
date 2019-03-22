@@ -15,6 +15,11 @@ export default class Header extends React.Component {
             isLoginFormVisible: false,
         }
     }
+
+    _toggleAbout = () => this.setState({
+        isAboutVisible: !this.state.isAboutVisible
+    })
+
     render() {
         const {
             isAboutVisible,
@@ -24,14 +29,26 @@ export default class Header extends React.Component {
         return (
             <div className='Header'>
                 {(isAboutVisible &&
-                    <About/>) ||
-                    <AboutButton/>}
+                    <About
+                        hideAbout={this._toggleAbout}
+                    />) ||
+                    <AboutButton
+                        showAbout={this._toggleAbout}
+                    />}
                 {(isUserFormVisible &&
                     <UserForm/>) ||
-                    <UserButton/>}
+                    <UserButton
+                        showUserForm={() => this.setState({
+                            isUserFormVisible: !this.state.isUserFormVisible
+                        })}
+                    />}
                 {(isLoginFormVisible &&
                     <LoginForm/>) ||
-                    <LoginButton/>}
+                    <LoginButton
+                        showLoginForm={() => this.setState({
+                            isLoginFormVisible: !this.state.isLoginFormVisible
+                        })}
+                    />}
             </div>
         )
     }
