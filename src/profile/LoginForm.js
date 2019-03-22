@@ -8,7 +8,8 @@ export const LoginForm = ({ showRegister }) => (
         {({ login }) => (
             <Mutation mutation={LOGIN}
                 onCompleted={({ login: { token, user }}) => {
-                    localStorage.setItem('auth-token', token)
+                    localStorage.setItem('auth-token', token) 
+                    localStorage.setItem('user-name', user.name) 
                     login(user)
                 }}
                 onError={err => window.alert(err.message)}
@@ -29,10 +30,18 @@ export const LoginForm = ({ showRegister }) => (
                         }}
                     >
                         <label>name
-                            <input type='text' name='name' placeholder='name'/>
+                            <input type='text' 
+                                name='name' 
+                                placeholder='name'
+                                autoComplete='username'
+                            />
                         </label>
                         <label>password
-                            <input type='password' name='password' placeholder='password'/>
+                            <input type='password' 
+                                name='password' 
+                                placeholder='password'
+                                autoComplete='current-password'
+                            />
                         </label>
                         <label>submit
                             <input type='submit' value='login'/>

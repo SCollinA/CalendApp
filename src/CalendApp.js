@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { ApolloProvider } from 'react-apollo'
+import gql from 'graphql-tag'
 import { client } from './apollo/client.js'
 import './CalendApp.css'
 import { Header } from './header/Header.js';
@@ -48,7 +49,23 @@ class CalendApp extends Component {
     }
   }
 
-
+  componentDidMount() {
+    const token = localStorage.getItem('auth-token')
+    const name = localStorage.getItem('user-name')
+    if (token && name) { 
+      client.query({
+        query: GET_USER,
+        variables: {
+          user: {
+            name
+          },
+        }
+      })
+      .then(({ data: { getUser }, loading, error }) => {
+        this.login(getUser) 
+      })
+    }
+  }
 
   render() {
     const { 
@@ -77,3 +94,13 @@ class CalendApp extends Component {
 }
 
 export default CalendApp;
+
+const GET_USER = gql`
+query GetUser($user: UserInput) {
+  getUser(user: $user) {
+    _id
+    name
+    eventIds
+  }  
+}
+`
