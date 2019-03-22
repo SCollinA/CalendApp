@@ -3,11 +3,11 @@ import { AppContext } from '../CalendApp'
 
 export const UserButton = () => (
     <AppContext.Consumer>
-        {({ user, toggleProfile }) => (
+        {({ user, isLoggedIn, toggleProfile }) => (
             <div className='UserButton'
                 onClick={toggleProfile}
             >
-                <p>{user._id ? `Welcome, ${user.name}` : 'Welcome, Guest'}</p>
+                <p>{isLoggedIn ? `Welcome, ${user.name}` : 'Welcome, Guest'}</p>
             </div>
         )}
     </AppContext.Consumer>

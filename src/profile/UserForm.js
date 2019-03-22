@@ -1,14 +1,13 @@
 import React from 'react'
 import { AppContext } from '../CalendApp'
-import { LoginForm } from './LoginForm';
+import { LogoutButton } from './LogoutButton'
 
 export const UserForm = () => (
     <AppContext.Consumer>
-        {({ user, isLoggedIn }) => (
+        {({ user }) => (
             <div className='UserForm'>
-                {(!isLoggedIn &&
-                    <LoginForm/>) ||
-                <p>user form</p>}
+                <LogoutButton/>
+                <p>user form</p>
             </div>
         )}
     </AppContext.Consumer>

@@ -5,7 +5,7 @@ import './CalendApp.css'
 import { Header } from './header/Header.js';
 import { Calendar } from './calendar/Calendar.js';
 import { About } from './About.js';
-import { UserForm } from './profile/UserForm.js';
+import { Profile } from './profile/Profile';
 
 export const AppContext = React.createContext({})
 
@@ -69,7 +69,7 @@ class CalendApp extends Component {
             {isAboutVisible && 
               <About/>}
             {isProfileVisible &&
-              <UserForm/>}
+              <Profile/>}
           </div>
         </AppContext.Provider>
       </ApolloProvider>
