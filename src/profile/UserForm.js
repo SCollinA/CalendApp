@@ -6,7 +6,6 @@ export const UserForm = () => (
     <AppContext.Consumer>
         {({ user }) => (
             <div className='UserForm'>
-                <LogoutButton/>
                 <p>user form</p>
             </div>
         )}
