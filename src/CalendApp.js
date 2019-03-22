@@ -5,17 +5,43 @@ import './CalendApp.css'
 import Header from './header/Header.js';
 import Calendar from './calendar/Calendar.js';
 
-const AppContext = React.createContext({})
+export const AppContext = React.createContext({})
 
 class CalendApp extends Component {
   constructor(props) {
     super(props)
+    
+    this.toggleAbout = () => this.setState({
+      isAboutVisible: !this.state.isAboutVisible
+    })
+  
+    this.toggleUserForm = () => this.setState({
+      isUserFormVisible: !this.state.isUserFormVisible
+    })
+  
+    this.toggleLoginForm = () => this.setState({
+      isLoginVisible: !this.state.isLoginFormVisible
+    })
+
     this.state = {
-      user: {}
+      user: {},
+      isAboutVisible: false,
+      isUserFormVisible: false,
+      isLoginFormVisible: false,
+      toggleAbout: this.toggleAbout,
+      toggleUserForm: this.toggleUserForm,
+      toggleLoginForm: this.toggleLoginForm,
     }
   }
 
+
+
   render() {
+    const {
+      isAboutVisible,
+      isLoginFormVisible,
+      isUserFormVisible
+    } = this.state
     return (
       <ApolloProvider client={client}>
         <AppContext.Provider
@@ -23,7 +49,10 @@ class CalendApp extends Component {
         >
           <div className="CalendApp">
             <Header/>
-            <Calendar/>
+            {!(isAboutVisible ||
+            isLoginFormVisible ||
+            isUserFormVisible) &&
+              <Calendar/>}
           </div>
         </AppContext.Provider>
       </ApolloProvider>

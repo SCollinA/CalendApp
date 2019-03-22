@@ -1,9 +1,14 @@
 import React from 'react'
+import { AppContext } from '../CalendApp'
 
-export default ({ showLoginForm }) => (
-    <div className='LoginButton'
-        onClick={showLoginForm}
-    >
-        <p>Login/Logout</p>
-    </div>
+export default () => (
+    <AppContext.Consumer>
+        {({ toggleLoginForm }) => (
+            <div className='LoginButton'
+                onClick={toggleLoginForm}
+            >
+                <p>Login/Logout</p>
+            </div>
+        )}
+    </AppContext.Consumer>
 )

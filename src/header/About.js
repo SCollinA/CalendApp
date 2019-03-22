@@ -1,9 +1,15 @@
 import React from 'react'
+import { AppContext } from '../CalendApp'
 
-export default ({ hideAbout }) => (
-    <div className='About'
-        onClick={hideAbout}
-    >
-        <p>component</p>
-    </div>
+export default () => (
+    <AppContext.Consumer>
+        {({ toggleAbout }) => (
+            <div className='About'>
+                <h1 onClick={toggleAbout}>
+                    CalendApp
+                </h1>
+                <p>here's a little about the app</p>
+            </div>
+        )}
+    </AppContext.Consumer>
 )
