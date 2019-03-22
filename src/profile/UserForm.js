@@ -27,9 +27,9 @@ export const UserForm = () => (
                 }}
             >
             {(updateUser, { data, loading, error }) => (
-                <div className='UserForm'>
+                <form className='UserForm'>
                     <p>user form</p>
-                </div>
+                </form>
             )}
             </Mutation>
         )}
