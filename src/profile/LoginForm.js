@@ -3,7 +3,7 @@ import { AppContext } from '../CalendApp'
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag'
 
-export const LoginForm = () => (
+export const LoginForm = ({ showRegister }) => (
     <AppContext.Consumer>
         {({ login }) => (
             <Mutation mutation={LOGIN}
@@ -18,13 +18,26 @@ export const LoginForm = () => (
                         onSubmit={event => {
                             event.preventDefault()
                             const user = {
-                                name: event.name.value,
-                                password: event.password.value
+                                name: event.target.name.value,
+                                password: event.target.password.value
                             }
-                            loginMutation(user)
+                            loginMutation({
+                                variables: {
+                                    user
+                                }
+                            })
                         }}
                     >
-                        <p>login form</p>
+                        <label>name
+                            <input type='text' name='name' placeholder='name'/>
+                        </label>
+                        <label>password
+                            <input type='password' name='password' placeholder='password'/>
+                        </label>
+                        <label>submit
+                            <input type='submit' value='login'/>
+                        </label>
+                        <input type='button' onClick={showRegister} value='register'/>
                     </form>
                 )}
             </Mutation>
@@ -36,6 +49,11 @@ const LOGIN = gql`
 mutation Login($user: UserInput) {
     login(user: $user) {
         token
+        user {
+            _id
+            name
+            eventIds
+        }
     }
 }
 `

@@ -27,7 +27,6 @@ class CalendApp extends Component {
       isAboutVisible: !this.state.isAboutVisible,
       isCalendarVisible: this.state.isAboutVisible,
       isProfileVisible: false,
-      isLoginFormVisible: false,
     })
   
     this.toggleProfile = () => this.setState({

@@ -16,7 +16,7 @@ export const client = new ApolloClient({
       if (networkError) console.log(`[Network error]: ${networkError}`)
     }),
     new HttpLink({
-      uri: 'http://localhost/graphql',
+      uri: 'http://localhost:4000/graphql',
     })
   ]),
   cache: new InMemoryCache()
