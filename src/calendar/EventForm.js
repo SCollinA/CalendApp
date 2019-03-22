@@ -1,7 +1,7 @@
 import React from 'react'
 
-export default () => (
-    <div className=''>
+export const EventForm = () => (
+    <div className='EventForm'>
         <p>component</p>
     </div>
 )

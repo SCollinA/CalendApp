@@ -1,7 +1,7 @@
 import React from 'react'
 
-export default () => (
-    <div className=''>
+export const Calendar = () => (
+    <div className='Calendar'>
         <p>calendar</p>
     </div>
 )

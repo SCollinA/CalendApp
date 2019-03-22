@@ -1,7 +1,7 @@
 import React from 'react'
 
-export default () => (
-    <div className=''>
+export const DayDetail = () => (
+    <div className='DayDetail'>
         <p>component</p>
     </div>
 )
