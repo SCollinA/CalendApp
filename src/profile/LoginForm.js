@@ -54,7 +54,7 @@ export const LoginForm = ({ showRegister }) => (
     </AppContext.Consumer>
 )
 
-const LOGIN = gql`
+export const LOGIN = gql`
 mutation Login($user: UserInput) {
     login(user: $user) {
         token

@@ -1,6 +1,6 @@
 import React from 'react'
 import { AppContext, GET_USER } from '../CalendApp'
-import { Mutation } from 'react-apollo'
+import { Mutation, Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
 export const UserForm = () => (
@@ -27,8 +27,60 @@ export const UserForm = () => (
                 }}
             >
             {(updateUser, { data, loading, error }) => (
-                <form className='UserForm'>
-                    <p>user form</p>
+                <form className='UserForm'
+                    onSubmit={event => {
+                        event.preventDefault()
+                        const newUser = {
+                            name: event.target.name.value,
+                            pwhash: event.target.password.value,
+                            // eventIds: event.target.events.value
+                        }
+                        updateUser({
+                            variables: {
+                                oldUser: {
+                                    _id: user._id,
+                                    pwhash: event.target.currentPassword.value
+                                },
+                                newUser
+                            }
+                        })
+                    }}
+                >
+                    <input type='text'
+                        name='name'
+                        placeholder='name'
+                        autoComplete='username'
+                    />
+                    <input type='password'
+                        name='password'
+                        placeholder='new password'
+                        autoComplete='new-password'
+                    />
+                    <input type='password'
+                        name='passwordConfirm'
+                        placeholder='new password'
+                        autoComplete='new-password'
+                    />
+                    <input type='password'
+                        name='currentPassword'
+                        placeholder='current password'
+                        autoComplete='current-password'
+                    />
+                    <select name='eventIds' multiple={true}>
+                        {user.eventIds.map(eventId => (
+                            <Query query={GET_EVENT_NAME}
+                                variables={{ event: { _id: eventId }}}
+                            >
+                                {({ data: { getEvent: { name }}, loading, error }) => (
+                                    <option name='eventIds'
+                                        value={name}
+                                    />
+                                )}
+                            </Query>
+                        ))}
+                    </select>
+                    <input type='submit' value='update'/>
+                    <input type='reset' value='reset'/>
                 </form>
             )}
             </Mutation>
@@ -37,11 +89,20 @@ export const UserForm = () => (
 )
 
 const UPDATE_USER = gql`
-mutation UpdateUser($user: UserInput) {
-    updateUser(user: $user) {
+mutation UpdateUser($oldUser: UserInput, $newUser: UserInput) {
+    updateUser(oldUser: $oldUser, newUser: $newUser) {
         _id
         name
         eventIds
+    }
+}
+`
+
+const GET_EVENT_NAME = gql`
+query GetEvent($event: EventInput) {
+    getEvent(event: $event) {
+        _id
+        name
     }
 }
 `
