@@ -1,7 +1,7 @@
 import React from 'react'
 import { AppContext } from '../CalendApp'
 
-export default () => (
+export const About = () => (
     <AppContext.Consumer>
         {({ toggleAbout }) => (
             <div className='About'>

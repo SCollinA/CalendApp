@@ -1,7 +1,7 @@
 import React from 'react'
 import { AppContext } from '../CalendApp'
 
-export default () => (
+export const UserForm = () => (
     <AppContext.Consumer>
         {({ toggleUserForm }) => (
             <div className='UserForm'
