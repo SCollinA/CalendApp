@@ -51,13 +51,13 @@ class CalendApp extends Component {
 
   componentDidMount() {
     const token = localStorage.getItem('auth-token')
-    const name = localStorage.getItem('user-name')
-    if (token && name) { 
+    const _id = localStorage.getItem('user-id')
+    if (token && _id) { 
       client.query({
         query: GET_USER,
         variables: {
           user: {
-            name
+            _id
           },
         }
       })
