@@ -19,7 +19,7 @@ export const LoginForm = ({ showRegister }) => (
                             event.preventDefault()
                             const user = {
                                 name: event.target.name.value,
-                                password: event.target.password.value
+                                pwhash: event.target.password.value
                             }
                             loginMutation({
                                 variables: {

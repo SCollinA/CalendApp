@@ -21,7 +21,7 @@ class CalendApp extends Component {
     this.logout = () => this.setState({
       user: {},
       isLoggedIn: false
-    })
+    }, () => localStorage.removeItem('auth-token'))
 
     this.toggleAbout = () => this.setState({
       isAboutVisible: !this.state.isAboutVisible,
