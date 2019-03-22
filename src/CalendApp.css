@@ -1,5 +1,41 @@
+/* =============================== */
+/*          Global Styles          */
+/* =============================== */
+* {
+    border: solid 1px black;
+}
+
+*:active {
+    background-color: lightgrey;
+}
+
+/* =============================== */
+/*          App Styles          */
+/* =============================== */
+/* .CalendApp {
+    
+} */
+
+/* =============================== */
+/*          Header Styles          */
+/* =============================== */
 .Header {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
 }
+
+/* =============================== */
+/*          Calendar Styles          */
+/* =============================== */
+/* .Calendar {
+    
+} */
+
+/* .CalendarDisplay {
+
+} */
+
+/* .Toolbar {
+
+} */

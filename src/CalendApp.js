@@ -95,7 +95,7 @@ class CalendApp extends Component {
 
 export default CalendApp;
 
-const GET_USER = gql`
+export const GET_USER = gql`
 query GetUser($user: UserInput) {
   getUser(user: $user) {
     _id
