@@ -1,15 +1,25 @@
 import React from 'react'
-import { AppContext } from '../CalendApp'
+import { AppContext, GET_USER } from '../CalendApp'
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag'
+import { client } from '../apollo/client';
 
 export const LoginForm = ({ showRegister }) => (
     <AppContext.Consumer>
         {({ login }) => (
             <Mutation mutation={LOGIN}
                 onCompleted={({ login: { token, user }}) => {
-                    localStorage.setItem('auth-token', token)
+                    localStorage.setItem('auth-token', token) 
+                    localStorage.setItem('user-name', user.name) 
                     login(user)
+                    client.query({
+                        query: GET_USER,
+                        variables: {
+                            user: {
+                                name: user.name
+                            }
+                        }
+                    })
                 }}
                 onError={err => window.alert(err.message)}
             >
@@ -29,10 +39,18 @@ export const LoginForm = ({ showRegister }) => (
                         }}
                     >
                         <label>name
-                            <input type='text' name='name' placeholder='name'/>
+                            <input type='text' 
+                                name='name' 
+                                placeholder='name'
+                                autoComplete='username'
+                            />
                         </label>
                         <label>password
-                            <input type='password' name='password' placeholder='password'/>
+                            <input type='password' 
+                                name='password' 
+                                placeholder='password'
+                                autoComplete='current-password'
+                            />
                         </label>
                         <label>submit
                             <input type='submit' value='login'/>
@@ -45,7 +63,7 @@ export const LoginForm = ({ showRegister }) => (
     </AppContext.Consumer>
 )
 
-const LOGIN = gql`
+export const LOGIN = gql`
 mutation Login($user: UserInput) {
     login(user: $user) {
         token

@@ -9,6 +9,7 @@ export const RegisterForm = ({ showLogin }) => (
             <Mutation mutation={REGISTER}
                 onCompleted={({ addUser: { token, user }}) => {
                     localStorage.setItem('auth-token', token)
+                    localStorage.setItem('user-name', user.name)
                     login(user)
                 }}
                 onError={err => window.alert(err.message)}
@@ -29,13 +30,25 @@ export const RegisterForm = ({ showLogin }) => (
                         }}
                     >
                         <label>name
-                            <input type='text' name='name' placeholder='name'/>
+                            <input type='text' 
+                                name='name' 
+                                placeholder='name'
+                                autoComplete='username'
+                            />
                         </label>
                         <label>password
-                            <input type='password' name='password' placeholder='password'/>
+                            <input type='password' 
+                                name='password' 
+                                placeholder='password'
+                                autoComplete='new-password'
+                            />
                         </label>
                         <label>password
-                            <input type='password' name='passwordConfirm' placeholder='confirm password'/>
+                            <input type='password' 
+                                name='passwordConfirm' 
+                                placeholder='confirm password'
+                                autoComplete='new-password'
+                            />
                         </label>
                         <label>submit
                             <input type='submit' value='register'/>
