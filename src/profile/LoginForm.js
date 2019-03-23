@@ -1,7 +1,8 @@
 import React from 'react'
-import { AppContext } from '../CalendApp'
+import { AppContext, GET_USER } from '../CalendApp'
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag'
+import { client } from '../apollo/client';
 
 export const LoginForm = ({ showRegister }) => (
     <AppContext.Consumer>
@@ -9,8 +10,16 @@ export const LoginForm = ({ showRegister }) => (
             <Mutation mutation={LOGIN}
                 onCompleted={({ login: { token, user }}) => {
                     localStorage.setItem('auth-token', token) 
-                    localStorage.setItem('user-id', user._id) 
+                    localStorage.setItem('user-name', user.name) 
                     login(user)
+                    client.query({
+                        query: GET_USER,
+                        variables: {
+                            user: {
+                                name: user.name
+                            }
+                        }
+                    })
                 }}
                 onError={err => window.alert(err.message)}
             >

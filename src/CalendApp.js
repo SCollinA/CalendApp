@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { ApolloProvider } from 'react-apollo'
 import { client } from './apollo/client.js'
+import gql from 'graphql-tag'
 import './CalendApp.css'
 import { Header } from './header/Header.js';
 import { Calendar } from './calendar/Calendar.js';
 import { About } from './About.js';
 import { Profile } from './profile/Profile';
-import { LOGIN } from './profile/LoginForm.js';
 
 export const AppContext = React.createContext({})
 
@@ -52,18 +52,21 @@ class CalendApp extends Component {
   componentDidMount() {
     const token = localStorage.getItem('auth-token')
     const name = localStorage.getItem('user-name')
-    if (token && name) { 
+    console.log(token)
+    if (name && token) {
+      console.log(name)
       client.query({
-        query: LOGIN,
+        query: GET_USER,
         variables: {
-          token,
           user: {
-            name: name
-          },
+            name
+          }
         }
       })
-      .then(({ data: { login: { user } }, loading, error }) => {
-        this.login(user) 
+      .then(({ data: { getUser }, loading, error }) => {
+        localStorage.setItem('auth-token', token)
+        localStorage.setItem('user-name', getUser.name)
+        this.login(getUser)
       })
     }
   }
@@ -95,3 +98,13 @@ class CalendApp extends Component {
 }
 
 export default CalendApp;
+
+export const GET_USER = gql`
+  query GetUser($user: UserInput) {
+    getUser(user: $user) {
+      _id
+      name
+      eventIds
+    }
+  }
+`

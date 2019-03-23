@@ -1,5 +1,5 @@
 import React from 'react'
-import { AppContext } from '../CalendApp'
+import { AppContext, GET_USER } from '../CalendApp'
 import { Mutation, Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import { LOGIN } from './LoginForm';
@@ -14,15 +14,19 @@ export const UserForm = () => (
                     <Mutation mutation={UPDATE_USER}
                         update={(cache, { data: { updateUser }, loading, error }) => {
                             const cachedUser = cache.readQuery({
-                                query: LOGIN,
+                                query: GET_USER,
                                 variables: {
-                                    _id: updateUser._id
+                                    user: {
+                                        name: updateUser.name
+                                    }
                                 },
                             })
                             cache.writeQuery({
-                                query: LOGIN,
+                                query: GET_USER,
                                 variables: {
-                                    _id: updateUser._id
+                                    user: {
+                                        name: updateUser.name
+                                    }
                                 },
                                 data: {
                                     ...cachedUser,
