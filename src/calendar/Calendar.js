@@ -33,7 +33,7 @@ export class Calendar extends React.Component {
         const dateRange = this.findDateRange()
         this.setState({
             weeks: this.findWeeks(dateRange)
-        })
+        }, () => this.calendarDisplayRef.current.scrollTo(0, this.calendarDisplayRef.current.scrollHeight / 2))
     }
 
     findDateRange = () => {
