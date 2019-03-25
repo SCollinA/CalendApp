@@ -1,15 +1,15 @@
 import React from 'react'
-import { Week } from './Week'
 import { CalContext } from './Calendar'
 
-export const CalendarDisplay = () => (
+export const CalendarDisplay = React.forwardRef(({ children }, ref) => (
     <CalContext.Consumer>
-        {({ weeks }) => (
-            <div className='CalendarDisplay'>
-                {weeks.map((week, index) => (
-                    <Week key={index} week={week}/>
-                ))}
+        {({ scrollWeeks, }) => (
+            <div className='CalendarDisplay' 
+                ref={ref}
+                onScroll={scrollWeeks}
+            >
+                {children}
             </div>
         )}
     </CalContext.Consumer>
-)
+))

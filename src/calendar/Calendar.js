@@ -1,5 +1,6 @@
 import React from 'react'
 import { CalendarDisplay } from './CalendarDisplay'
+import { Week } from './Week'
 import { Toolbar } from './Toolbar'
 
 export const CalContext = React.createContext({})
@@ -8,15 +9,28 @@ export class Calendar extends React.Component {
     constructor(props) {
         super(props)
 
-        this.state = {
-            weeks: []
+        this.scrollWeeks = () => {
+            console.log('height above display', this.firstWeekRef.current.scrollHeight * 3, 
+            'height below display', this.lastWeekRef.current.scrollHeight * 3, 
+            'calendar display top', this.calendarDisplayRef.current.scrollTop, 
+            'calendar display bottom', this.calendarDisplayRef.current.scrollHeight)
+            // if scroll distance is greater than week height
+            // remove week
+            // and replace on other side
         }
+
+        this.state = {
+            weeks: [],
+            scrollWeeks: this.scrollWeeks,
+        }
+        this.calendarDisplayRef = React.createRef()
+        this.firstWeekRef = React.createRef()
+        this.lastWeekRef = React.createRef()
     }
 
     componentDidMount() {
         // set up initial dates and weeks
         const dateRange = this.findDateRange()
-        console.log(dateRange)
         this.setState({
             weeks: this.findWeeks(dateRange)
         })
@@ -61,7 +75,11 @@ export class Calendar extends React.Component {
                 value={this.state}
             >
                 <div className='Calendar'>
-                    <CalendarDisplay/>
+                    <CalendarDisplay ref={this.calendarDisplayRef}>
+                        {this.state.weeks.map((week, index) => (
+                            <Week key={index} week={week} ref={(index === 0 && this.firstWeekRef) || (index === 9 && this.lastWeekRef)}/>
+                        ))}
+                    </CalendarDisplay>
                     <Toolbar/>
                 </div>
             </CalContext.Provider>
