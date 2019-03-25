@@ -24,6 +24,12 @@ class CalendApp extends Component {
       isLoggedIn: false
     }, () => localStorage.removeItem('auth-token'))
 
+    this.goHome = () => this.setState({
+      isAboutVisible: false,
+      isCalendarVisible: true,
+      isProfileVisible: false,
+    })
+
     this.toggleAbout = () => this.setState({
       isAboutVisible: !this.state.isAboutVisible,
       isCalendarVisible: this.state.isAboutVisible,
@@ -46,6 +52,7 @@ class CalendApp extends Component {
       isCalendarVisible: true,
       toggleAbout: this.toggleAbout,
       toggleProfile: this.toggleProfile,
+      goHome: this.goHome,
     }
   }
 
