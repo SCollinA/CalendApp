@@ -1,7 +1,9 @@
 import React from 'react'
+import { CalendarDisplay } from './CalendarDisplay'
+import { Toolbar } from './Toolbar'
 import { Week } from './Week'
 
-const CalContext = React.createContext({})
+export const CalContext = React.createContext({})
 
 export class Calendar extends React.Component {
     constructor(props) {
@@ -9,6 +11,7 @@ export class Calendar extends React.Component {
 
         this.state = {
             weeks: []
+        }
     }
 
     componentDidMount() {
@@ -36,17 +39,21 @@ export class Calendar extends React.Component {
     findWeeks = (dateRange) => {
         const weeks = []
         const currentDate = new Date(dateRange.firstDay)
-        while (currentDate.getTime() < dateRange.lastDay.getTime()) {
-            const week = []
-            for (let i = 0; i < 7; i++) {
-                // add new date
-                week.push(new Date(currentDate))
-                // update current date
-                currentDate.setTime(currentDate.getTime() + 1 * 24 * 60 * 60 * 1000)
-            }
-            weeks.push(week)
+        while (currentDate.getTime() < dateRange.lastDay.getTime()) {  
+            weeks.push(this.findWeek(currentDate))
         }
         return weeks
+    }
+
+    findWeek = (currentDate) => {
+        const week = []
+        for (let i = 0; i < 7; i++) {
+            // add new date
+            week.push(new Date(currentDate))
+            // update current date
+            currentDate.setTime(currentDate.getTime() + 1 * 24 * 60 * 60 * 1000)
+        }
+        return week
     }
 
     render() {
@@ -55,9 +62,8 @@ export class Calendar extends React.Component {
                 value={this.state}
             >
                 <div className='Calendar'>
-                    {this.state.weeks.map(week => (
-                        <Week/>
-                    ))}
+                    <CalendarDisplay/>
+                    <Toolbar/>
                 </div>
             </CalContext.Provider>
         )
