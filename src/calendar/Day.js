@@ -1,7 +1,9 @@
 import React from 'react'
 
-export const Day = () => (
+export const Day = ({ day }) => (
     <div className='Day'>
-        <p>component</p>
+        {day.getMonth() === 0 && <p>{day.getFullYear()}</p>}
+        {day.getDate() === 1 && <p>{day.getMonth()}</p>}
+        <p>{day.getDate()}</p>
     </div>
 )

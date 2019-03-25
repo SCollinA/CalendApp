@@ -1,7 +1,6 @@
 import React from 'react'
 import { CalendarDisplay } from './CalendarDisplay'
 import { Toolbar } from './Toolbar'
-import { Week } from './Week'
 
 export const CalContext = React.createContext({})
 

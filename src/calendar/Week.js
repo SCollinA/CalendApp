@@ -1,7 +1,10 @@
 import React from 'react'
+import { Day } from './Day'
 
-export const Week = () => (
+export const Week = ({ week }) => (
     <div className='Week'>
-        <p>component</p>
+        {week.map((day, index) => (
+            <Day key={index} day={day}/>
+        ))}
     </div>
 )
