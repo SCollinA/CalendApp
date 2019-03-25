@@ -35,21 +35,18 @@ export class Calendar extends React.Component {
 
     componentDidMount() {
         // set up initial dates and weeks
-        const weeks = [
-            {
-                labels: [],
-                days: []
-            }
-        ]
+        const weeks = []
         // find current date
-        const today = new Date()
-        const dayOfWeek = today.getDay()
-        today.setDate(today.getDate() - dayOfWeek)
-        console.log(today)
-        // // if today is not sunday
-        // if (dayOfWeek !== 0) {
-        //     // find sunday
-        // }
+        const firstDay = new Date()
+        const dayOfWeek = firstDay.getDay()
+        // find 5 weeks ago
+        firstDay.setDate(firstDay.getDate() - 35)
+        // find sunday of that week
+        firstDay.setDate(firstDay.getDate() - dayOfWeek)
+        // find 70 days away
+        const lastDay = new Date(firstDay.getTime() + 70 * 24 * 60 * 60 * 1000)
+        console.log(firstDay)
+        console.log(lastDay)
     }
 
     render() {
