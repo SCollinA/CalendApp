@@ -13,6 +13,7 @@ export class Profile extends React.Component{
         }
     }
 
+    // initially loads to login form
     _toggleRegister = () => this.setState({
         isRegistering: !this.state.isRegistering
     })

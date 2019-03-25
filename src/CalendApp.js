@@ -14,6 +14,8 @@ class CalendApp extends Component {
   constructor(props) {
     super(props)
 
+    // declare functions here to pass into state
+    // so context is not re-calculated too often
     this.login = user => this.setState({
       user,
       isLoggedIn: true
@@ -42,6 +44,7 @@ class CalendApp extends Component {
       isAboutVisible: false,
     })
   
+    // this is passed into context
     this.state = {
       user: {},
       isLoggedIn: false,
@@ -59,9 +62,7 @@ class CalendApp extends Component {
   componentDidMount() {
     const token = localStorage.getItem('auth-token')
     const name = localStorage.getItem('user-name')
-    console.log(token)
     if (name && token) {
-      console.log(name)
       client.query({
         query: GET_USER,
         variables: {
