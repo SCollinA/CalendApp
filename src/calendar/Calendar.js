@@ -9,7 +9,6 @@ export class Calendar extends React.Component {
     constructor(props) {
         super(props)
 
-
         this.goToToday = () => {
             const dateRange = this.findDateRange()
             this.setState({
@@ -18,11 +17,6 @@ export class Calendar extends React.Component {
         }
 
         this.scrollWeeks = () => {
-            console.log(this.state.weeks[this.state.weeks.length - 1][6].getDate())
-            // console.log('height above display', this.firstWeekRef.current.scrollHeight * 3, 
-            // 'height below display', this.lastWeekRef.current.scrollHeight * 3, 
-            // 'calendar display top', this.calendarDisplayRef.current.scrollTop, 
-            // 'calendar display bottom', this.calendarDisplayRef.current.scrollHeight)
             // if scroll distance is greater than week height
             const firstWeek = this.firstWeekRef.current
             // const lastWeek = this.lastWeekRef.current
