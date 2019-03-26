@@ -15,6 +15,18 @@ export class Calendar extends React.Component {
             'calendar display top', this.calendarDisplayRef.current.scrollTop, 
             'calendar display bottom', this.calendarDisplayRef.current.scrollHeight)
             // if scroll distance is greater than week height
+            const firstWeek = this.firstWeekRef.current
+            const lastWeek = this.lastWeekRef.current
+            const calendarDisplay = this.calendarDisplayRef.current
+            if (calendarDisplay.scrollTop > firstWeek.scrollHeight * 4) {
+                this.setState({
+                    weeks: [
+                        ...this.state.weeks.slice(1),
+                        this.findWeek(new Date(this.state.weeks[this.state.weeks.length - 1][6].getDate()))
+                    ]
+                })
+                calendarDisplay.scrollTo(0, firstWeek.scrollHeight * 3)
+            }
             // remove week
             // and replace on other side
         }
@@ -33,7 +45,7 @@ export class Calendar extends React.Component {
         const dateRange = this.findDateRange()
         this.setState({
             weeks: this.findWeeks(dateRange)
-        }, () => this.calendarDisplayRef.current.scrollTo(0, this.calendarDisplayRef.current.scrollHeight / 2))
+        }, () => this.calendarDisplayRef.current.scrollTo(0, this.calendarDisplayRef.current.scrollHeight / 3))
     }
 
     findDateRange = () => {
@@ -41,7 +53,7 @@ export class Calendar extends React.Component {
         const firstDay = new Date()
         const dayOfWeek = firstDay.getDay()
         // find 5 weeks ago
-        firstDay.setDate(firstDay.getDate() - 35)
+        firstDay.setDate(firstDay.getDate() - 28)
         // find sunday of that week
         firstDay.setDate(firstDay.getDate() - dayOfWeek)
         // find 70 days away
