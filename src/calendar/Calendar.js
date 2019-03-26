@@ -10,13 +10,14 @@ export class Calendar extends React.Component {
         super(props)
 
         this.scrollWeeks = () => {
-            console.log('height above display', this.firstWeekRef.current.scrollHeight * 3, 
-            'height below display', this.lastWeekRef.current.scrollHeight * 3, 
-            'calendar display top', this.calendarDisplayRef.current.scrollTop, 
-            'calendar display bottom', this.calendarDisplayRef.current.scrollHeight)
+            console.log(this.state.weeks[this.state.weeks.length - 1][6].getDate())
+            // console.log('height above display', this.firstWeekRef.current.scrollHeight * 3, 
+            // 'height below display', this.lastWeekRef.current.scrollHeight * 3, 
+            // 'calendar display top', this.calendarDisplayRef.current.scrollTop, 
+            // 'calendar display bottom', this.calendarDisplayRef.current.scrollHeight)
             // if scroll distance is greater than week height
             const firstWeek = this.firstWeekRef.current
-            const lastWeek = this.lastWeekRef.current
+            // const lastWeek = this.lastWeekRef.current
             const calendarDisplay = this.calendarDisplayRef.current
             // if scrolled down one week
             if (calendarDisplay.scrollTop > firstWeek.scrollHeight * 4) {
@@ -25,8 +26,8 @@ export class Calendar extends React.Component {
                     weeks: [
                         // remove the first week
                         ...this.state.weeks.slice(1),
-                        // add in a new weeks using the last weeks last date
-                        this.findWeek(new Date(this.state.weeks[this.state.weeks.length - 1][6].getDate()))
+                        // add in a new weeks using the last weeks last date + one day
+                        this.findWeek(new Date(this.state.weeks[this.state.weeks.length - 1][6].getTime() + 1 * 24 * 60 * 60 * 1000))
                     ]
                 }, () => calendarDisplay.scrollTo(0, firstWeek.scrollHeight * 3))
             // if scrolled up one week
@@ -34,13 +35,14 @@ export class Calendar extends React.Component {
                 // update the weeks in state
                 this.setState({
                     weeks: [
-                        this.findWeek(new Date(this.state.weeks[0][0].getDate())),
+                        // add in a new week using the first weeks first day - one week
+                        this.findWeek(new Date(this.state.weeks[0][0].getTime() - 7 * 24 * 60 * 60 * 1000)),
+                        // add in remaining weeks except last week
                         ...this.state.weeks.slice(0, this.state.weeks.length - 1)
                     ]
                 }, () => calendarDisplay.scrollTo(0, firstWeek.scrollHeight * 4))
             }
-            // remove week
-            // and replace on other side
+
         }
 
         this.state = {
