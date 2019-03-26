@@ -1,7 +1,15 @@
 import React from 'react'
+import { CalContext } from './Calendar'
 
-export const CalendarDisplay = () => (
-    <div className='CalendarDisplay'>
-        <p>component</p>
-    </div>
-)
+export const CalendarDisplay = React.forwardRef(({ children }, ref) => (
+    <CalContext.Consumer>
+        {({ scrollWeeks, }) => (
+            <div className='CalendarDisplay' 
+                ref={ref}
+                onScroll={scrollWeeks}
+            >
+                {children}
+            </div>
+        )}
+    </CalContext.Consumer>
+))

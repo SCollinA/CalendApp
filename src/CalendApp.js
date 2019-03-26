@@ -14,6 +14,8 @@ class CalendApp extends Component {
   constructor(props) {
     super(props)
 
+    // declare functions here to pass into state
+    // so context is not re-calculated too often
     this.login = user => this.setState({
       user,
       isLoggedIn: true
@@ -23,6 +25,12 @@ class CalendApp extends Component {
       user: {},
       isLoggedIn: false
     }, () => localStorage.removeItem('auth-token'))
+
+    this.goHome = () => this.setState({
+      isAboutVisible: false,
+      isCalendarVisible: true,
+      isProfileVisible: false,
+    })
 
     this.toggleAbout = () => this.setState({
       isAboutVisible: !this.state.isAboutVisible,
@@ -36,6 +44,7 @@ class CalendApp extends Component {
       isAboutVisible: false,
     })
   
+    // this is passed into context
     this.state = {
       user: {},
       isLoggedIn: false,
@@ -46,15 +55,14 @@ class CalendApp extends Component {
       isCalendarVisible: true,
       toggleAbout: this.toggleAbout,
       toggleProfile: this.toggleProfile,
+      goHome: this.goHome,
     }
   }
 
   componentDidMount() {
     const token = localStorage.getItem('auth-token')
     const name = localStorage.getItem('user-name')
-    console.log(token)
     if (name && token) {
-      console.log(name)
       client.query({
         query: GET_USER,
         variables: {
