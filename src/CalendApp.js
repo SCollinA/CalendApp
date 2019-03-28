@@ -69,7 +69,6 @@ class CalendApp extends Component {
         }
       })
       .then(({ data: { autoLogin }, loading, error }) => {
-        console.log(autoLogin)
         if (autoLogin) {
           localStorage.setItem('auth-token', autoLogin.token)
           this.login(autoLogin.user)

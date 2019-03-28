@@ -1,10 +1,43 @@
 import React from 'react'
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
 import { Day } from './Day'
+import { EventLabel } from './EventLabel'
+import { AppContext } from '../CalendApp'
 
 export const Week = React.forwardRef(({ week }, ref) => (
-    <div className='Week' ref={ref}>
-        {week.map((day, index) => (
-            <Day key={index} day={day}/>
-        ))}
-    </div>
+    <AppContext.Consumer>
+        {({ user }) => (
+            <div className='Week' ref={ref}>
+                {week.map((day, index) => (
+                    <Query query={GET_EVENTS}
+                        key={index}
+                        variables={{
+                            event: {
+                                hostId: user._id,
+                                timeStart: day
+                            }
+                        }}
+                    >
+                        {({ getEvents }) => (
+                            <Day day={day}>
+                                {getEvents && getEvents.map((event, index) => (
+                                    <EventLabel key={index} event={event}/>
+                                ))}
+                            </Day>
+                        )}    
+                    </Query>
+                ))}
+            </div>
+        )}
+    </AppContext.Consumer>
 ))
+
+export const GET_EVENTS = gql`
+  query GetEvents($event: EventInput) {
+      getEvents(event: $event) {
+          _id
+          name
+      }
+  }
+`
