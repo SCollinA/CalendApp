@@ -1,8 +1,8 @@
 import React from 'react'
 
-export const Day = ({ day, children }) => (
+export const Day = ({ day, children, showDayDetail }) => (
     <div className='Day'
-        onClick={() => null}
+        onClick={() => showDayDetail(day)}
     >
         {/* {(day.getMonth() === 0 && day.getDate() === 1) && 
             <p className='yearLabel'>{day.getFullYear()}</p>} */}

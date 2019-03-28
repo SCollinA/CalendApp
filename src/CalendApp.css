@@ -36,6 +36,18 @@
     width: calc(100% + 15px);
 }
 
+.yearLabel {
+    position: absolute;
+    top: 10%;
+    left: 5%;
+}
+
+.monthLabel {
+    position: absolute;
+    top: 10%;
+    left: 15%;
+}
+
 .Week {
     height: 25%;
     padding: 2%;
@@ -48,16 +60,13 @@
     flex: 1;
 } */
 
-.yearLabel {
-    position: absolute;
-    top: 10%;
-    left: 5%;
-}
-
-.monthLabel {
-    position: absolute;
-    top: 10%;
-    left: 15%;
+.DayDetail {
+    position: fixed;
+    top: 15%;
+    left: 10%;
+    right: 10%;
+    bottom: 10%;
+    background-color: whitesmoke;
 }
 
 .Toolbar {

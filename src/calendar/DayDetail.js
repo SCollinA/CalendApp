@@ -1,7 +1,12 @@
 import React from 'react'
+import { CalContext } from './Calendar';
 
 export const DayDetail = () => (
-    <div className='DayDetail'>
-        <p>component</p>
-    </div>
+    <CalContext.Consumer>
+        {({ day }) => (
+            <div className='DayDetail'>
+                <p>{day.toLocaleString()}</p>
+            </div>
+        )}
+    </CalContext.Consumer>
 )
