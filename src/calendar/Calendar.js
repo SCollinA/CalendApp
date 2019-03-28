@@ -65,6 +65,9 @@ export class Calendar extends React.Component {
     findDateRange = () => {
         // find current date
         const firstDay = new Date()
+        // set time to midnight
+        firstDay.setHours(0, 0, 0, 0)
+        console.log(firstDay)
         const dayOfWeek = firstDay.getDay()
         // find 5 weeks ago
         firstDay.setDate(firstDay.getDate() - 28)
