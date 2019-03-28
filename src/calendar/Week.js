@@ -15,13 +15,13 @@ export const Week = React.forwardRef(({ week }, ref) => (
                         variables={{
                             event: {
                                 hostId: user._id,
-                                timeStart: day
+                                timeStart: day.toDateString()
                             }
                         }}
                     >
-                        {({ getEvents }) => (
+                        {({ data: { getEvents }, loading, error }) => (
                             <Day day={day}>
-                                {getEvents && getEvents.map((event, index) => (
+                                {!loading && getEvents.map((event, index) => (
                                     <EventLabel key={index} event={event}/>
                                 ))}
                             </Day>
