@@ -48,6 +48,18 @@
     flex: 1;
 } */
 
+.yearLabel {
+    position: absolute;
+    top: 10%;
+    left: 5%;
+}
+
+.monthLabel {
+    position: absolute;
+    top: 10%;
+    left: 15%;
+}
+
 .Toolbar {
     height: 10%;
 }

@@ -110,7 +110,16 @@ export class Calendar extends React.Component {
                                 week={week} 
                                 ref={(index === 0 && this.firstWeekRef) || (
                                     index === 9 && this.lastWeekRef)}
-                            />
+                            >
+                                {index === 4 &&
+                                    <p className='yearLabel'>
+                                        {week[0].getFullYear()}
+                                    </p>}
+                                {index === 4 &&
+                                    <p className='monthLabel'>
+                                        {week[0].getMonth() + 1}
+                                    </p>}
+                            </Week>
                         ))}
                     </CalendarDisplay>
                     <Toolbar/>
