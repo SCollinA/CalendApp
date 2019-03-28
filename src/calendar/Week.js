@@ -28,7 +28,7 @@ export const Week = React.forwardRef(({ week, children, className }, ref) => (
                                     <Day day={day} showDayDetail={showDayDetail}>
                                         {!loading && getEvents.map((event, index) => (
                                             <EventLabel key={index} event={event}/>
-                                            ))}
+                                        ))}
                                         {loading &&
                                             <Loading/>}
                                     </Day>
