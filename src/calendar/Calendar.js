@@ -106,6 +106,7 @@ export class Calendar extends React.Component {
                     <CalendarDisplay ref={this.calendarDisplayRef}>
                         {this.state.weeks.map((week, index) => (
                             <Week 
+                                className={index === 4 ? 'thisWeek' : ''}
                                 key={index} 
                                 week={week} 
                                 ref={(index === 0 && this.firstWeekRef) || (

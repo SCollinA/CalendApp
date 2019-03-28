@@ -6,10 +6,10 @@ import { EventLabel } from './EventLabel'
 import { AppContext } from '../CalendApp'
 import { Loading } from '../Loading';
 
-export const Week = React.forwardRef(({ week, children }, ref) => (
+export const Week = React.forwardRef(({ week, children, className }, ref) => (
     <AppContext.Consumer>
         {({ user }) => (
-            <div className='Week' ref={ref}>
+            <div className={`Week${` ${className}`}`} ref={ref}>
                 {children}
                 {week.map((day, index) => (
                     <Query query={GET_EVENTS}
