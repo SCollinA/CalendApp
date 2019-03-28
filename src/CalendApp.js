@@ -7,6 +7,7 @@ import { Header } from './header/Header.js';
 import { Calendar } from './calendar/Calendar.js';
 import { About } from './About.js';
 import { Profile } from './profile/Profile';
+import { LOGIN } from './profile/LoginForm.js';
 
 export const AppContext = React.createContext({})
 
@@ -61,19 +62,15 @@ class CalendApp extends Component {
 
   componentDidMount() {
     const token = localStorage.getItem('auth-token')
-    const name = localStorage.getItem('user-name')
-    if (name && token) {
+    if (token) {
       client.query({
-        query: GET_USER,
+        query: LOGIN,
         variables: {
-          user: {
-            name
-          }
+          token
         }
       })
       .then(({ data: { getUser }, loading, error }) => {
         localStorage.setItem('auth-token', token)
-        localStorage.setItem('user-name', getUser.name)
         this.login(getUser)
       })
     }

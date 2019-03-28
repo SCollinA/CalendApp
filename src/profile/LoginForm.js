@@ -10,7 +10,6 @@ export const LoginForm = ({ showRegister }) => (
             <Mutation mutation={LOGIN}
                 onCompleted={({ login: { token, user }}) => {
                     localStorage.setItem('auth-token', token) 
-                    localStorage.setItem('user-name', user.name) 
                     login(user)
                     client.query({
                         query: GET_USER,
