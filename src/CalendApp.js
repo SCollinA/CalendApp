@@ -61,20 +61,19 @@ class CalendApp extends Component {
 
   componentDidMount() {
     const token = localStorage.getItem('auth-token')
-    const name = localStorage.getItem('user-name')
-    if (name && token) {
-      client.query({
-        query: GET_USER,
+    if (token) {
+      client.mutate({
+        mutation: AUTO_LOGIN,
         variables: {
-          user: {
-            name
-          }
+          token
         }
       })
-      .then(({ data: { getUser }, loading, error }) => {
-        localStorage.setItem('auth-token', token)
-        localStorage.setItem('user-name', getUser.name)
-        this.login(getUser)
+      .then(({ data: { autoLogin }, loading, error }) => {
+        console.log(autoLogin)
+        if (autoLogin) {
+          localStorage.setItem('auth-token', autoLogin.token)
+          this.login(autoLogin.user)
+        }
       })
     }
   }
@@ -106,6 +105,19 @@ class CalendApp extends Component {
 }
 
 export default CalendApp;
+
+export const AUTO_LOGIN = gql`
+  mutation AutoLogin($token: String) {
+    autoLogin(token: $token) {
+      token
+      user {
+        _id
+        name
+        eventIds
+      }
+    }
+  }
+`
 
 export const GET_USER = gql`
   query GetUser($user: UserInput) {
