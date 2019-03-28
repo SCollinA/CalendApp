@@ -4,6 +4,7 @@ import gql from 'graphql-tag'
 import { Day } from './Day'
 import { EventLabel } from './EventLabel'
 import { AppContext } from '../CalendApp'
+import { Loading } from '../Loading';
 
 export const Week = React.forwardRef(({ week }, ref) => (
     <AppContext.Consumer>
@@ -24,6 +25,8 @@ export const Week = React.forwardRef(({ week }, ref) => (
                                 {!loading && getEvents.map((event, index) => (
                                     <EventLabel key={index} event={event}/>
                                 ))}
+                                {loading &&
+                                    <Loading/>}
                             </Day>
                         )}    
                     </Query>
