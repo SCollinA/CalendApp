@@ -65,6 +65,8 @@ export class Calendar extends React.Component {
     findDateRange = () => {
         // find current date
         const firstDay = new Date()
+        // set time to midnight
+        firstDay.setHours(0, 0, 0, 0)
         const dayOfWeek = firstDay.getDay()
         // find 5 weeks ago
         firstDay.setDate(firstDay.getDate() - 28)
@@ -103,7 +105,12 @@ export class Calendar extends React.Component {
                 <div className='Calendar'>
                     <CalendarDisplay ref={this.calendarDisplayRef}>
                         {this.state.weeks.map((week, index) => (
-                            <Week key={index} week={week} ref={(index === 0 && this.firstWeekRef) || (index === 9 && this.lastWeekRef)}/>
+                            <Week 
+                                key={index} 
+                                week={week} 
+                                ref={(index === 0 && this.firstWeekRef) || (
+                                    index === 9 && this.lastWeekRef)}
+                            />
                         ))}
                     </CalendarDisplay>
                     <Toolbar/>
