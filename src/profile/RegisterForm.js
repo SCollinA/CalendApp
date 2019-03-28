@@ -9,7 +9,6 @@ export const RegisterForm = ({ showLogin }) => (
             <Mutation mutation={REGISTER}
                 onCompleted={({ addUser: { token, user }}) => {
                     localStorage.setItem('auth-token', token)
-                    localStorage.setItem('user-name', user.name)
                     login(user)
                 }}
                 onError={err => window.alert(err.message)}
