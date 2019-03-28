@@ -68,9 +68,12 @@ class CalendApp extends Component {
           token
         }
       })
-      .then(({ data: { autoLogin: { token, user } }, loading, error }) => {
-        localStorage.setItem('auth-token', token)
-        this.login(user)
+      .then(({ data: { autoLogin }, loading, error }) => {
+        console.log(autoLogin)
+        if (autoLogin) {
+          localStorage.setItem('auth-token', autoLogin.token)
+          this.login(autoLogin.user)
+        }
       })
     }
   }
@@ -106,12 +109,12 @@ export default CalendApp;
 export const AUTO_LOGIN = gql`
   mutation AutoLogin($token: String) {
     autoLogin(token: $token) {
+      token
       user {
         _id
         name
         eventIds
       }
-      token
     }
   }
 `
