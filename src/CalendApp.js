@@ -7,7 +7,6 @@ import { Header } from './header/Header.js';
 import { Calendar } from './calendar/Calendar.js';
 import { About } from './About.js';
 import { Profile } from './profile/Profile';
-import { LOGIN } from './profile/LoginForm.js';
 
 export const AppContext = React.createContext({})
 
@@ -63,15 +62,15 @@ class CalendApp extends Component {
   componentDidMount() {
     const token = localStorage.getItem('auth-token')
     if (token) {
-      client.query({
-        query: LOGIN,
+      client.mutate({
+        mutation: AUTO_LOGIN,
         variables: {
           token
         }
       })
-      .then(({ data: { getUser }, loading, error }) => {
+      .then(({ data: { login: { token, user } }, loading, error }) => {
         localStorage.setItem('auth-token', token)
-        this.login(getUser)
+        this.login(user)
       })
     }
   }
@@ -103,6 +102,19 @@ class CalendApp extends Component {
 }
 
 export default CalendApp;
+
+export const AUTO_LOGIN = gql`
+  mutation AutoLogin($token: String) {
+    autoLogin(token: $token) {
+      user {
+        _id
+        name
+        eventIds
+      }
+      token
+    }
+  }
+`
 
 export const GET_USER = gql`
   query GetUser($user: UserInput) {
