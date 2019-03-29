@@ -1,10 +1,11 @@
 import React from 'react'
 import { Query } from 'react-apollo'
-import { CalContext } from './Calendar';
-import { GET_EVENTS } from './Week';
-import { AppContext } from '../CalendApp';
-import { Loading } from '../Loading';
-import { EventLabel } from './EventLabel';
+import { CalContext } from './Calendar'
+import { GET_EVENTS } from './Week'
+import { AppContext } from '../CalendApp'
+import { Loading } from '../Loading'
+import { EventLabel } from './EventLabel'
+import { EventAddButton } from './EventAddButton'
 
 export const DayDetail = () => (
     <AppContext.Consumer>
@@ -25,9 +26,21 @@ export const DayDetail = () => (
                                 {(loading &&
                                     <Loading/>)}
                                 <p>{day.toDateString()}</p>
-                                {getEvents.map((event, index) => (
-                                    <EventLabel key={index} event={event}/>
-                                ))}
+                                {getEvents.map((event, index, arr) => {
+                                    let freeTime = false
+                                    if (index !== getEvents.length - 1) {
+                                        if (event.timeEnd < getEvents[index + 1].timeEnd) {
+                                            freeTime = true
+                                        }
+                                    }
+                                    return (
+                                        <div key={index}>
+                                            <EventLabel  event={event}/>
+                                            {freeTime &&
+                                                <EventAddButton/>}
+                                        </div>
+                                    )
+                                })}
                                 <p onClick={() => showDayDetail()}>close</p>
                             </div>
                         )}    
