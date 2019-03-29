@@ -29,7 +29,6 @@ export const DayDetail = () => (
                                 {getEvents.map((event, index, arr) => {
                                     let freeTime = false
                                     if (index !== getEvents.length - 1) {
-                                        console.log(event.timeEnd)
                                         if (event.timeEnd < getEvents[index + 1].timeEnd) {
                                             freeTime = true
                                         }
