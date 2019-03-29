@@ -59,6 +59,7 @@ export const EventForm = ({ event }) => (
                                         }
                                     })
                                 }}
+                                onReset={() => showEventForm(event)}
                             >
                                 {!getEventLoading && (
                                 <>
@@ -75,8 +76,9 @@ export const EventForm = ({ event }) => (
                                         <p>{guestId}</p>
                                     ))}
                                     <p onClick={() => showEventForm()}>
-                                        close
+                                        cancel
                                     </p>
+                                    <input type='reset' value='reset'/>
                                     <input type='submit' value='submit'/>
                                 </>
                                 )}
