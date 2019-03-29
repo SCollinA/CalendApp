@@ -23,7 +23,7 @@ export const EventAddButton = ({ timeStart, timeEnd }) => (
                             const midnightToday = new Date(timeStart)
                             midnightToday.setHours(0, 0, 0, 0)
                             var data
-                            try {
+                            try { // there may not be events on that day yet
                                 data = cache.readQuery({
                                     query: GET_EVENTS,
                                     variables: {

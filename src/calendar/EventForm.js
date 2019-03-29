@@ -1,11 +1,12 @@
 import React from 'react'
-import { CalContext } from './Calendar'
 import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag'
+import { CalContext } from './Calendar'
+import { GET_EVENTS } from './Week'
 
 export const EventForm = ({ event }) => (
     <CalContext.Consumer>
-        {({ showEventForm, newEvent, updateEventForm }) => (
+        {({ day, showEventForm, newEvent, updateEventForm }) => (
             <Query query={GET_EVENT}
                 variables={{ 
                     event: {
@@ -18,16 +19,32 @@ export const EventForm = ({ event }) => (
                     return (
                     <Mutation mutation={UPDATE_EVENT}
                         update={(cache, { data: { updateEvent }, loading, error }) => {
-                            // cache.writeQuery({
-                            //     query: GET_EVENT,
-                            //     variables: {
-                            //         event: updateEvent
-                            //     },
-                            //     data: {
-                            //         getEvent: updateEvent
-                            //     }
-                            // })
+                            const { getEvents } = cache.readQuery({
+                                query: GET_EVENTS,
+                                variables: {
+                                    event: {
+                                        hostId: getEvent.hostId,
+                                        timeStart: day.toDateString()
+                                    }
+                                }
+                            })
+                            cache.writeQuery({
+                                query: GET_EVENTS,
+                                variables: {
+                                    event: {
+                                        hostId: event.hostId,
+                                        timeStart: day.toDateString()
+                                    }
+                                },
+                                data: {
+                                    getEvents: [
+                                        ...getEvents,
+                                        updateEvent
+                                    ]
+                                }
+                            })
                         }}
+                        onCompleted={(data) => showEventForm()}
                     >
                         {(updateEvent, { data, loading, error }) => (
                             <form className='EventForm'
@@ -76,6 +93,7 @@ export const GET_EVENT = gql`
   query GetEvent($event: EventInput) {
       getEvent(event: $event) {
           _id
+          hostId
           name
           timeStart
           timeEnd
