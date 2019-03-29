@@ -5,7 +5,10 @@ export const EventLabel = ({ event }) => (
     <CalContext.Consumer>
         {({ showEventForm }) => (
             <div className="EventLabel"
-                onClick={() => showEventForm(event)}
+                onClick={e => {
+                    e.stopPropagation()
+                    showEventForm(event)
+                }}
             >
                 <p>{event.name}</p>
             </div>
