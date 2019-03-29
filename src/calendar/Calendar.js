@@ -49,7 +49,12 @@ export class Calendar extends React.Component {
 
         this.showDayDetail = day => this.setState({ day })
 
-        this.showEventForm = event => this.setState({ event })
+        this.showEventForm = event => this.setState({ 
+            event,
+            newEvent: event,
+        })
+
+        this.updateEventForm = newEvent => this.setState({ newEvent })
 
         this.state = {
             day: null,
@@ -59,6 +64,8 @@ export class Calendar extends React.Component {
             scrollWeeks: this.scrollWeeks,
             showDayDetail: this.showDayDetail,
             showEventForm: this.showEventForm,
+            newEvent: null,
+            updateEventForm: this.updateEventForm,
         }
         this.calendarDisplayRef = React.createRef()
         this.firstWeekRef = React.createRef()
