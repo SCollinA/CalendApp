@@ -27,24 +27,26 @@ export const DayDetail = () => (
                                     <Loading/>)}
                                 <p>{day.toDateString()}</p>
                                 {getEvents.map((event, index, arr) => {
-                                    let freeTime = false
+                                    let freeTimeUntil = null
                                     if (index !== getEvents.length - 1) {
-                                        if (event.timeEnd < getEvents[index + 1].timeEnd) {
-                                            freeTime = true
+                                        if (event.timeEnd < getEvents[index + 1].timeStart) {
+                                            freeTimeUntil = getEvents[index + 1].timeStart
                                         }
                                     } else {
                                         const midnightTonight = new Date()
                                         midnightTonight.setHours(0, 0, 0, 0)
                                         midnightTonight.setDate(midnightTonight.getDate() + 1)
                                         if (event.timeEnd < midnightTonight) {
-                                            freeTime = true
+                                            freeTimeUntil = midnightTonight
                                         }
                                     }
                                     return (
                                         <div key={index}>
                                             <EventLabel  event={event}/>
-                                            {freeTime &&
-                                                <EventAddButton timeStart={event.timeEnd}/>}
+                                            {freeTimeUntil &&
+                                                <EventAddButton timeStart={event.timeEnd}
+                                                    timeEnd={freeTimeUntil}
+                                                />}
                                         </div>
                                     )
                                 })}
