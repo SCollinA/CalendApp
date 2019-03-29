@@ -39,13 +39,13 @@
 .yearLabel {
     position: absolute;
     top: 10%;
-    left: 5%;
+    left: 10%;
 }
 
 .monthLabel {
     position: absolute;
     top: 10%;
-    left: 15%;
+    right: 10%;
 }
 
 .Week {

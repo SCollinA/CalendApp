@@ -10,24 +10,25 @@ export const DayDetail = () => (
     <AppContext.Consumer>
         {({ user }) => (
             <CalContext.Consumer>
-                {({ day }) => (
+                {({ day, showDayDetail }) => (
                     <Query query={GET_EVENTS}
-                    variables={{
-                        event: {
-                            hostId: user._id,
-                            timeStart: day.toDateString()
-                        }
-                    }}
-                    fetchPolicy='cache-only'
+                        variables={{
+                            event: {
+                                hostId: user._id,
+                                timeStart: day.toDateString()
+                            }
+                        }}
+                        fetchPolicy='cache-only'
                     >
                         {({ data: { getEvents }, loading, error }) => (
                             <div className='DayDetail'>
                                 {(loading &&
                                     <Loading/>)}
-                                <p>{day.toLocaleString()}</p>
+                                <p>{day.toDateString()}</p>
                                 {getEvents.map((event, index) => (
                                     <EventLabel key={index} event={event}/>
                                 ))}
+                                <p onClick={() => showDayDetail()}>close</p>
                             </div>
                         )}    
                     </Query>
