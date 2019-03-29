@@ -44,7 +44,7 @@ export const DayDetail = () => (
                                         <div key={index}>
                                             <EventLabel  event={event}/>
                                             {freeTime &&
-                                                <EventAddButton/>}
+                                                <EventAddButton timeStart={event.timeEnd}/>}
                                         </div>
                                     )
                                 })}
