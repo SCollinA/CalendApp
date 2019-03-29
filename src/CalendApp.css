@@ -36,6 +36,18 @@
     width: calc(100% + 15px);
 }
 
+.yearLabel {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+}
+
+.monthLabel {
+    position: absolute;
+    top: 10%;
+    right: 10%;
+}
+
 .Week {
     height: 25%;
     padding: 2%;
@@ -47,6 +59,14 @@
 /* .Day {
     flex: 1;
 } */
+
+.DayDetail {
+    position: fixed;
+    top: 15%;
+    left: 10%;
+    right: 10%;
+    bottom: 10%;
+}
 
 .Toolbar {
     height: 10%;

@@ -47,10 +47,14 @@ export class Calendar extends React.Component {
 
         }
 
+        this.showDayDetail = day => this.setState({ day })
+
         this.state = {
+            day: null,
             weeks: [],
             goToToday: this.goToToday,
             scrollWeeks: this.scrollWeeks,
+            showDayDetail: this.showDayDetail,
         }
         this.calendarDisplayRef = React.createRef()
         this.firstWeekRef = React.createRef()
@@ -106,11 +110,21 @@ export class Calendar extends React.Component {
                     <CalendarDisplay ref={this.calendarDisplayRef}>
                         {this.state.weeks.map((week, index) => (
                             <Week 
+                                className={index === 4 ? 'thisWeek' : ''}
                                 key={index} 
                                 week={week} 
                                 ref={(index === 0 && this.firstWeekRef) || (
                                     index === 9 && this.lastWeekRef)}
-                            />
+                            >
+                                {index === 4 &&
+                                    <p className='yearLabel'>
+                                        {week[0].getFullYear()}
+                                    </p>}
+                                {index === 4 &&
+                                    <p className='monthLabel'>
+                                        {week[0].getMonth() + 1}
+                                    </p>}
+                            </Week>
                         ))}
                     </CalendarDisplay>
                     <Toolbar/>
