@@ -42,7 +42,7 @@ export const DayDetail = () => (
                                     }
                                     return (
                                         <div key={index}>
-                                            <EventLabel  event={event}/>
+                                            <EventLabel event={event}/>
                                             {freeTimeUntil &&
                                                 <EventAddButton timeStart={event.timeEnd || freeTimeUntil}
                                                     timeEnd={freeTimeUntil}

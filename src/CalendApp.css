@@ -60,13 +60,19 @@
     overflow-y: auto;
 }
 
-.DayDetail {
+.DayDetail, .EventForm {
+    z-index: 1;
     position: fixed;
     top: 15%;
     left: 10%;
     right: 10%;
     bottom: 10%;
     overflow-y: auto;
+}
+
+.EventForm {
+    z-index: 2;
+    background-color: aliceblue;
 }
 
 .Toolbar {
