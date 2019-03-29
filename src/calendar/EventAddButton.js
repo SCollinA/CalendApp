@@ -22,7 +22,7 @@ export const EventAddButton = ({ timeStart, timeEnd }) => (
                         update={(cache, { data: { addEvent }, loading, error}) => {
                             const midnightToday = new Date(timeStart)
                             midnightToday.setHours(0, 0, 0, 0)
-                            const getEvents = cache.readQuery({
+                            const { getEvents } = cache.readQuery({
                                 query: GET_EVENTS,
                                 variables: {
                                     event: {
@@ -39,10 +39,12 @@ export const EventAddButton = ({ timeStart, timeEnd }) => (
                                         timeStart: midnightToday.toDateString()
                                     }
                                 },
-                                data: [
-                                    ...getEvents,
-                                    addEvent
-                                ]
+                                data: {
+                                    getEvents: [
+                                        ...getEvents,
+                                        addEvent
+                                    ]
+                                }
                             })
                         }}
                         onCompleted={({ addEvent }) => {
@@ -68,6 +70,7 @@ export const ADD_EVENT = gql`
       addEvent(event: $event) {
           _id
           name
+          timeStart
           timeEnd
       }
   }
