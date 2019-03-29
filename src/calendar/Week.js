@@ -47,6 +47,7 @@ export const GET_EVENTS = gql`
       getEvents(event: $event) {
           _id
           name
+          timeStart
           timeEnd
       }
   }

@@ -16,7 +16,7 @@ export const EventAddButton = ({ timeStart, timeEnd }) => (
                                 hostId: user._id,
                                 name: 'new event',
                                 timeStart,
-                                timeEnd
+                                timeEnd,
                             }
                         }}
                         update={(cache, { data: { addEvent }, loading, error}) => {
@@ -27,7 +27,7 @@ export const EventAddButton = ({ timeStart, timeEnd }) => (
                                 variables: {
                                     event: {
                                         hostId: user._id,
-                                        timeStart: midnightToday
+                                        timeStart: midnightToday.toDateString()
                                     }
                                 }
                             })
@@ -36,7 +36,7 @@ export const EventAddButton = ({ timeStart, timeEnd }) => (
                                 variables: {
                                     event: {
                                         hostId: user._id,
-                                        timeStart: midnightToday
+                                        timeStart: midnightToday.toDateString()
                                     }
                                 },
                                 data: [

@@ -33,7 +33,7 @@ export const DayDetail = () => (
                                             freeTimeUntil = getEvents[index + 1].timeStart
                                         }
                                     } else {
-                                        const midnightTonight = new Date()
+                                        const midnightTonight = new Date(event.timeStart)
                                         midnightTonight.setHours(0, 0, 0, 0)
                                         midnightTonight.setDate(midnightTonight.getDate() + 1)
                                         if (event.timeEnd < midnightTonight) {
@@ -44,7 +44,7 @@ export const DayDetail = () => (
                                         <div key={index}>
                                             <EventLabel  event={event}/>
                                             {freeTimeUntil &&
-                                                <EventAddButton timeStart={event.timeEnd}
+                                                <EventAddButton timeStart={event.timeEnd || freeTimeUntil}
                                                     timeEnd={freeTimeUntil}
                                                 />}
                                         </div>
