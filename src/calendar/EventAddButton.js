@@ -22,15 +22,22 @@ export const EventAddButton = ({ timeStart, timeEnd }) => (
                         update={(cache, { data: { addEvent }, loading, error}) => {
                             const midnightToday = new Date(timeStart)
                             midnightToday.setHours(0, 0, 0, 0)
-                            const { getEvents } = cache.readQuery({
-                                query: GET_EVENTS,
-                                variables: {
-                                    event: {
-                                        hostId: user._id,
-                                        timeStart: midnightToday.toDateString()
-                                    }
-                                }
-                            })
+                            var data
+                            try {
+                                data = cache.readQuery({
+                                    query: GET_EVENTS,
+                                    variables: {
+                                        event: {
+                                            hostId: user._id,
+                                            timeStart: midnightToday.toDateString()
+                                        }
+                                    },
+                                })
+                            } catch (error) {
+                                console.log(error)
+                                data = { getEvents: [] }
+                            }
+                            const { getEvents } = data
                             cache.writeQuery({
                                 query: GET_EVENTS,
                                 variables: {

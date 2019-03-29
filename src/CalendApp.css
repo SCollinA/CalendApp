@@ -56,9 +56,9 @@
     overflow-x: auto;
 }
 
-/* .Day {
-    flex: 1;
-} */
+.Day {
+    overflow-y: auto;
+}
 
 .DayDetail {
     position: fixed;
@@ -66,6 +66,7 @@
     left: 10%;
     right: 10%;
     bottom: 10%;
+    overflow-y: auto;
 }
 
 .Toolbar {

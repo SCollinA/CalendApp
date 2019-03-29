@@ -51,7 +51,9 @@ export const DayDetail = () => (
                                     )
                                 })}
                                 {!getEvents.length && 
-                                    <EventAddButton/>}
+                                    <EventAddButton timeStart={day}
+                                        timeEnd={day}
+                                    />}
                                 <p onClick={() => showDayDetail()}>close</p>
                             </div>
                         )}    
