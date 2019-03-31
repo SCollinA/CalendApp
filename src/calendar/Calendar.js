@@ -13,7 +13,7 @@ export class Calendar extends React.Component {
             const dateRange = this.findDateRange()
             this.setState({
                 weeks: this.findWeeks(dateRange)
-            }, () => this.calendarDisplayRef.current.scrollTo(0, this.calendarDisplayRef.current.scrollHeight / 3))
+            }, () => this.thisWeekRef.current.scrollIntoView())
         }
 
         this.scrollWeeks = () => {
@@ -69,7 +69,7 @@ export class Calendar extends React.Component {
         }
         this.calendarDisplayRef = React.createRef()
         this.firstWeekRef = React.createRef()
-        this.lastWeekRef = React.createRef()
+        this.thisWeekRef = React.createRef()
     }
 
     componentDidMount() {
@@ -125,7 +125,7 @@ export class Calendar extends React.Component {
                                 key={index} 
                                 week={week} 
                                 ref={(index === 0 && this.firstWeekRef) || (
-                                    index === 9 && this.lastWeekRef)}
+                                    index === 4 && this.thisWeekRef)}
                             >
                                 {index === 4 &&
                                     <p className='yearLabel'>
