@@ -96,7 +96,6 @@ export class Calendar extends React.Component {
         const weeks = []
         const currentDate = new Date(dateRange.firstDay)
         while (currentDate.getTime() < dateRange.lastDay.getTime()) {  
-            console.log(currentDate)
             weeks.push(this.findWeek(currentDate))
         }
         return weeks

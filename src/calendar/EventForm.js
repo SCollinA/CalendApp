@@ -87,26 +87,37 @@ export const EventForm = ({ event }) => (
                                         {({ data: { getEvents }, loading, error }) => {
                                             const midnightTonight = new Date(event.timeStart)
                                             midnightTonight.setHours(23, 59, 59, 0)
-                                            var timeEndMax = midnightTonight.getTime()
-                                            var timeStartMax = new Date(day).getTime()
+                                            var timeEndMax = midnightTonight
+                                            var timeStartMax = new Date(day)
                                             for (let i = 0; i < getEvents.length; i++) {
                                                 const getEvent = getEvents[i]
                                                 // if it's the first event of the day
                                                 if (getEvent.timeEnd < event.timeStart) {
-                                                    timeStartMax = getEvent.timeEnd
+                                                    timeStartMax = new Date(getEvent.timeEnd)
                                                 } else if (getEvent.timeStart > event.timeEnd) {
                                                     // else it is the timeStart of the next event
-                                                    timeEndMax = getEvents[i + 1].timeStart
+                                                    timeEndMax = new Date(getEvents[i + 1].timeStart)
                                                     break
                                                 }
                                             }
-                                            console.log(new Date(timeEndMax), new Date(timeStartMax))
+                                            console.log(timeEndMax, timeStartMax)
+                                            const newEventTimeStart = new Date(newEvent.timeStart)
+                                            const newEventTimeEnd = new Date(newEvent.timeEnd)
                                             return (
                                                 <>
-                                                    <p>{new Date(newEvent.timeStart).toLocaleTimeString()}</p> 
-                                                    <select name='timeStart'>
-
-                                                    </select>
+                                                    <p>{newEventTimeStart.toLocaleTimeString()}</p> 
+                                                    <input type='number' name='timeStartHour'
+                                                        value={newEventTimeStart.getHours()}
+                                                        onChange={({ target }) => {
+                                                            newEventTimeStart.setHours(target.value)
+                                                            updateEventForm({
+                                                                ...newEvent,
+                                                                timeStart: newEventTimeStart.getTime()
+                                                            })
+                                                        }}
+                                                        max={newEventTimeEnd.getHours()}
+                                                        min={timeStartMax.getHours()}
+                                                    />
                                                     <p>{new Date(newEvent.timeEnd).toLocaleTimeString()}</p> 
                                                     <select name='timeEnd'>
 
