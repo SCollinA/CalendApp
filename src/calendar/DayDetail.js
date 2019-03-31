@@ -27,25 +27,25 @@ export const DayDetail = () => (
                                     <Loading/>)}
                                 <p>{day.toDateString()}</p>
                                 {getEvents.map((event, index, arr) => {
-                                    let freeTimeUntil = null
+                                    let freeTimeEnd = null
                                     if (index !== getEvents.length - 1) {
                                         if (event.timeEnd < getEvents[index + 1].timeStart) {
-                                            freeTimeUntil = getEvents[index + 1].timeStart
+                                            freeTimeEnd = getEvents[index + 1].timeStart
                                         }
                                     } else {
                                         const midnightTonight = new Date(event.timeStart)
                                         midnightTonight.setHours(0, 0, 0, 0)
                                         midnightTonight.setDate(midnightTonight.getDate() + 1)
                                         if (event.timeEnd < midnightTonight) {
-                                            freeTimeUntil = midnightTonight
+                                            freeTimeEnd = midnightTonight
                                         }
                                     }
                                     return (
                                         <div key={index}>
                                             <EventLabel event={event}/>
-                                            {freeTimeUntil &&
-                                                <EventAddButton timeStart={event.timeEnd || freeTimeUntil}
-                                                    timeEnd={freeTimeUntil}
+                                            {freeTimeEnd &&
+                                                <EventAddButton timeStart={event.timeEnd || freeTimeEnd}
+                                                    timeEnd={freeTimeEnd}
                                                 />}
                                         </div>
                                     )

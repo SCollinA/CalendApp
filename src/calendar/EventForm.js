@@ -1,10 +1,13 @@
 import React from 'react'
 import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag'
+import { AppContext } from '../CalendApp'
 import { CalContext } from './Calendar'
 import { GET_EVENTS } from './Week'
 
 export const EventForm = ({ event }) => (
+    <AppContext.Consumer>
+        {({ user }) => (
     <CalContext.Consumer>
         {({ day, showEventForm, newEvent, updateEventForm }) => (
             <Query query={GET_EVENT}
@@ -72,12 +75,62 @@ export const EventForm = ({ event }) => (
                                             name: value
                                         })}
                                     />
+                                    <Query query={GET_EVENTS}
+                                        variables={{
+                                            hostId: user._id,
+                                            timeStart: day.toDateString()
+                                        }}
+                                        fetchPolicy={'cache-only'}
+                                    >
+                                        {({ data: { getEvents }, loading, error }) => {
+                                            var timeEndMax
+                                            var timeStartMax 
+                                            for (let i = 0; getEvents && i < getEvents.length; i++) {
+                                                const getEvent = getEvents[i]
+                                                // if it's the first event of the day
+                                                if (i === 0 && getEvent._id === event._id) {
+                                                    // make the start time max midnight that morning
+                                                    timeStartMax = new Date(day).toDateString()
+                                                } else if (new Date(getEvent.timeEnd) < new Date(event.timeStart)) {
+                                                    timeStartMax = getEvent.timeEnd
+                                                } else {
+                                                    // this must be the event itself
+                                                    // if this is the last event today
+                                                    if (i === getEvents.length - 1) {
+                                                        // time end max is midnight tonight
+                                                        const midnightTonight = new Date(event.timeStart)
+                                                        midnightTonight.setHours(23, 59, 59, 9999)
+                                                        timeEndMax = midnightTonight.toDateString()
+                                                    } else {
+                                                        // else it is the timeStart of the next event
+                                                        timeEndMax = getEvents[i + 1].timeStart
+                                                        break
+                                                    }
+                                                }
+                                            }
+                                            console.log(timeEndMax, timeStartMax)
+                                            return (
+                                                <>
+                                                    <p>{new Date(newEvent.timeStart).toLocaleTimeString()}</p> 
+                                                    <select name='timeStart'>
+
+                                                    </select>
+                                                    <p>{new Date(newEvent.timeEnd).toLocaleTimeString()}</p> 
+                                                    <select name='timeEnd'>
+
+                                                    </select>
+                                                </>
+                                            )
+                                        }}
+                                    </Query>
+                                    {/* start time input */}
+                                    {/* end time input */}
                                     {getEvent.guestIds.map(guestId => (
                                         <p>{guestId}</p>
                                     ))}
-                                    <p onClick={() => showEventForm()}>
-                                        cancel
-                                    </p>
+                                    <input type='button' value='cancel'
+                                        onClick={() => showEventForm()}
+                                    />
                                     <input type='reset' value='reset'/>
                                     <input type='submit' value='submit'/>
                                 </>
@@ -88,7 +141,9 @@ export const EventForm = ({ event }) => (
                 )}}
             </Query>
         )}
-    </CalContext.Consumer>
+    </CalContext.Consumer>  
+        )}
+    </AppContext.Consumer>
 )
 
 export const GET_EVENT = gql`
