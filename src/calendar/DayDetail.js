@@ -28,7 +28,10 @@ export const DayDetail = () => (
                                 <p>{day.toDateString()}</p>
                                 {getEvents.map((event, index, arr) => {
                                     let freeTimeEnd = null
-                                    if (index !== getEvents.length - 1) {
+                                    let freeTimeStart = day
+                                    if (index === 0 && event.timeStart <= day) {
+                                        freeTimeStart = null
+                                    } else if (index !== getEvents.length - 1) {
                                         if (event.timeEnd < getEvents[index + 1].timeStart) {
                                             freeTimeEnd = getEvents[index + 1].timeStart
                                         }
@@ -40,8 +43,13 @@ export const DayDetail = () => (
                                             freeTimeEnd = midnightTonight
                                         }
                                     }
+                                    console.log(freeTimeStart, freeTimeEnd)
                                     return (
                                         <div key={index}>
+                                            {freeTimeStart &&
+                                                <EventAddButton timeStart={freeTimeStart}
+                                                    timeEnd={event.timeStart || freeTimeStart}
+                                                />}
                                             <EventLabel event={event}/>
                                             {freeTimeEnd &&
                                                 <EventAddButton timeStart={event.timeEnd || freeTimeEnd}

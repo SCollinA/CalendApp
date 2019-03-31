@@ -100,7 +100,6 @@ export const EventForm = ({ event }) => (
                                                     break
                                                 }
                                             }
-                                            console.log(timeEndMax, timeStartMax)
                                             const newEventTimeStart = new Date(newEvent.timeStart)
                                             const newEventTimeEnd = new Date(newEvent.timeEnd)
                                             return (
@@ -112,7 +111,6 @@ export const EventForm = ({ event }) => (
                                                             newEventTimeStart.setHours(target.value)
                                                             if (newEventTimeStart > newEventTimeEnd ||
                                                                 newEventTimeStart < timeStartMax) {
-                                                                console.log(newEventTimeEnd, newEventTimeStart)
                                                                 newEventTimeStart.setMinutes(0)
                                                             }
                                                             updateEventForm({
