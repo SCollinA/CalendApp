@@ -119,9 +119,18 @@ export const EventForm = ({ event }) => (
                                                         min={timeStartMax.getHours()}
                                                     />
                                                     <p>{new Date(newEvent.timeEnd).toLocaleTimeString()}</p> 
-                                                    <select name='timeEnd'>
-
-                                                    </select>
+                                                    <input type='number' name='timeEndHour'
+                                                        value={newEventTimeEnd.getHours()}
+                                                        onChange={({ target }) => {
+                                                            newEventTimeEnd.setHours(target.value)
+                                                            updateEventForm({
+                                                                ...newEvent,
+                                                                timeEnd: newEventTimeEnd.getTime()
+                                                            })
+                                                        }}
+                                                        max={timeEndMax.getHours()}
+                                                        min={newEventTimeStart.getHours()}
+                                                    />
                                                 </>
                                             )
                                         }}
