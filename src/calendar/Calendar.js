@@ -77,33 +77,6 @@ export class Calendar extends React.Component {
         this.goToToday()
     }
 
-    findWeekCells = weeks => {
-        return weeks.map(this.findWeekCell)
-    }
-
-    findWeekCell = (week, index) => {
-        const isThisWeek = index === 4
-        return (
-            <Week 
-                className={isThisWeek ? 
-                    'thisWeek' : 
-                    ''}
-                key={week[0].toDateString()} 
-                week={week} 
-                ref={isThisWeek ? this.thisWeekRef : null}
-            >
-                {isThisWeek &&
-                    <p className='yearLabel'>
-                        {week[0].getFullYear()}
-                    </p>}
-                {isThisWeek &&
-                    <p className='monthLabel'>
-                        {week[0].getMonth() + 1}
-                    </p>}
-            </Week>
-        )
-    }
-
     findDateRange = () => {
         // find current date
         const firstDay = new Date()
@@ -123,6 +96,7 @@ export class Calendar extends React.Component {
         const weeks = []
         const currentDate = new Date(dateRange.firstDay)
         while (currentDate.getTime() < dateRange.lastDay.getTime()) {  
+            console.log(currentDate)
             weeks.push(this.findWeek(currentDate))
         }
         return weeks
@@ -135,6 +109,12 @@ export class Calendar extends React.Component {
             week.push(new Date(currentDate))
             // update current date
             currentDate.setTime(currentDate.getTime() + 1 * 24 * 60 * 60 * 1000)
+            // if time is now 1 AM or 11 PM, DST happened
+            if (currentDate.getHours() === 1) { currentDate.setHours(0) }
+            else if (currentDate.getHours() === 23) { 
+                currentDate.setHours(0)
+                currentDate.setDate(currentDate.getDate() + 1)
+            }
         }
         return week
     }
@@ -146,7 +126,28 @@ export class Calendar extends React.Component {
             >
                 <div className='Calendar'>
                     <CalendarDisplay ref={this.calendarDisplayRef}>
-                        {this.findWeekCells(this.state.weeks)}
+                        {this.state.weeks.map((week, index) => {
+                            const isThisWeek = index === 4
+                            return (
+                                <Week 
+                                    className={isThisWeek ? 
+                                        'thisWeek' : 
+                                        ''}
+                                    key={week[0].toDateString()} 
+                                    week={week} 
+                                    ref={isThisWeek ? this.thisWeekRef : null}
+                                >
+                                    {isThisWeek &&
+                                        <p className='yearLabel'>
+                                            {week[0].getFullYear()}
+                                        </p>}
+                                    {isThisWeek &&
+                                        <p className='monthLabel'>
+                                            {week[0].getMonth() + 1}
+                                        </p>}
+                                </Week>
+                            )
+                        })}
                     </CalendarDisplay>
                     <Toolbar/>
                 </div>
