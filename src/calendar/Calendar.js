@@ -11,29 +11,30 @@ export class Calendar extends React.Component {
 
         this.goToToday = () => {
             const dateRange = this.findDateRange()
-            this.setState({
-                weeks: this.findWeeks(dateRange)
-            }, () => this.calendarDisplayRef.current.scrollTo(0, this.calendarDisplayRef.current.scrollHeight / 3))
+            const weeks = this.findWeeks(dateRange)
+            this.setState({ weeks}, () => this.thisWeekRef.current.scrollIntoView())
         }
 
         this.scrollWeeks = () => {
             // if scroll distance is greater than week height
-            const firstWeek = this.firstWeekRef.current
+            const thisWeek = this.thisWeekRef.current
             // const lastWeek = this.lastWeekRef.current
             const calendarDisplay = this.calendarDisplayRef.current
             // if scrolled down one week
-            if (calendarDisplay.scrollTop > firstWeek.scrollHeight * 4) {
+            if (calendarDisplay.scrollTop > thisWeek.scrollHeight * 4) {
                 // update the weeks in state
+                const week = this.findWeek(new Date(this.state.weeks[this.state.weeks.length - 1][6].getTime() + 1 * 24 * 60 * 60 * 1000))
                 this.setState({
                     weeks: [
                         // remove the first week
                         ...this.state.weeks.slice(1),
                         // add in a new weeks using the last weeks last date + one day
-                        this.findWeek(new Date(this.state.weeks[this.state.weeks.length - 1][6].getTime() + 1 * 24 * 60 * 60 * 1000))
+                        week
                     ]
-                }, () => calendarDisplay.scrollTo(0, firstWeek.scrollHeight * 3))
+                })
+                // , () => calendarDisplay.scrollTo(0, thisWeek.scrollHeight * 3))
             // if scrolled up one week
-            } else if (calendarDisplay.scrollTop < firstWeek.scrollHeight * 3) {
+            } else if (calendarDisplay.scrollTop < thisWeek.scrollHeight * 3) {
                 // update the weeks in state
                 this.setState({
                     weeks: [
@@ -42,9 +43,9 @@ export class Calendar extends React.Component {
                         // add in remaining weeks except last week
                         ...this.state.weeks.slice(0, this.state.weeks.length - 1)
                     ]
-                }, () => calendarDisplay.scrollTo(0, firstWeek.scrollHeight * 4))
+                })
+                // , () => calendarDisplay.scrollTo(0, thisWeek.scrollHeight * 4))
             }
-
         }
 
         this.showDayDetail = day => this.setState({ day })
@@ -68,13 +69,39 @@ export class Calendar extends React.Component {
             updateEventForm: this.updateEventForm,
         }
         this.calendarDisplayRef = React.createRef()
-        this.firstWeekRef = React.createRef()
-        this.lastWeekRef = React.createRef()
+        this.thisWeekRef = React.createRef()
     }
 
     componentDidMount() {
         // set up initial dates and weeks
         this.goToToday()
+    }
+
+    findWeekCells = weeks => {
+        return weeks.map(this.findWeekCell)
+    }
+
+    findWeekCell = (week, index) => {
+        const isThisWeek = index === 4
+        return (
+            <Week 
+                className={isThisWeek ? 
+                    'thisWeek' : 
+                    ''}
+                key={week[0].toDateString()} 
+                week={week} 
+                ref={isThisWeek ? this.thisWeekRef : null}
+            >
+                {isThisWeek &&
+                    <p className='yearLabel'>
+                        {week[0].getFullYear()}
+                    </p>}
+                {isThisWeek &&
+                    <p className='monthLabel'>
+                        {week[0].getMonth() + 1}
+                    </p>}
+            </Week>
+        )
     }
 
     findDateRange = () => {
@@ -92,7 +119,7 @@ export class Calendar extends React.Component {
         return { firstDay, lastDay }
     }
 
-    findWeeks = (dateRange) => {
+    findWeeks = dateRange => {
         const weeks = []
         const currentDate = new Date(dateRange.firstDay)
         while (currentDate.getTime() < dateRange.lastDay.getTime()) {  
@@ -119,24 +146,7 @@ export class Calendar extends React.Component {
             >
                 <div className='Calendar'>
                     <CalendarDisplay ref={this.calendarDisplayRef}>
-                        {this.state.weeks.map((week, index) => (
-                            <Week 
-                                className={index === 4 ? 'thisWeek' : ''}
-                                key={index} 
-                                week={week} 
-                                ref={(index === 0 && this.firstWeekRef) || (
-                                    index === 9 && this.lastWeekRef)}
-                            >
-                                {index === 4 &&
-                                    <p className='yearLabel'>
-                                        {week[0].getFullYear()}
-                                    </p>}
-                                {index === 4 &&
-                                    <p className='monthLabel'>
-                                        {week[0].getMonth() + 1}
-                                    </p>}
-                            </Week>
-                        ))}
+                        {this.findWeekCells(this.state.weeks)}
                     </CalendarDisplay>
                     <Toolbar/>
                 </div>
