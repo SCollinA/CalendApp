@@ -96,7 +96,7 @@ export const EventForm = ({ event }) => (
                                                     timeStartMax = new Date(getEvent.timeEnd)
                                                 } else if (getEvent.timeStart > event.timeEnd) {
                                                     // else it is the timeStart of the next event
-                                                    timeEndMax = new Date(getEvents[i + 1].timeStart)
+                                                    timeEndMax = new Date(getEvent.timeStart)
                                                     break
                                                 }
                                             }
@@ -110,6 +110,11 @@ export const EventForm = ({ event }) => (
                                                         value={newEventTimeStart.getHours()}
                                                         onChange={({ target }) => {
                                                             newEventTimeStart.setHours(target.value)
+                                                            if (newEventTimeStart > newEventTimeEnd ||
+                                                                newEventTimeStart < timeStartMax) {
+                                                                console.log(newEventTimeEnd, newEventTimeStart)
+                                                                newEventTimeStart.setMinutes(0)
+                                                            }
                                                             updateEventForm({
                                                                 ...newEvent,
                                                                 timeStart: newEventTimeStart.getTime()
@@ -117,6 +122,20 @@ export const EventForm = ({ event }) => (
                                                         }}
                                                         max={newEventTimeEnd.getHours()}
                                                         min={timeStartMax.getHours()}
+                                                    />
+                                                    <input type='number' name='timeStartMin'
+                                                        value={newEventTimeStart.getMinutes()}
+                                                        onChange={({ target }) => {
+                                                            newEventTimeStart.setMinutes(target.value)
+                                                            updateEventForm({
+                                                                ...newEvent,
+                                                                timeStart: newEventTimeStart.getTime()
+                                                            })
+                                                        }}
+                                                        max={newEventTimeStart.getHours() < newEventTimeEnd.getHours() ?
+                                                            59 : newEventTimeEnd.getMinutes()}
+                                                        min={newEventTimeStart.getHours() > timeStartMax.getHours() ?
+                                                            0 : timeStartMax.getMinutes()}
                                                     />
                                                     <p>{new Date(newEvent.timeEnd).toLocaleTimeString()}</p> 
                                                     <input type='number' name='timeEndHour'

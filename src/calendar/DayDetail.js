@@ -34,7 +34,7 @@ export const DayDetail = () => (
                                         }
                                     } else {
                                         const midnightTonight = new Date(event.timeStart)
-                                        midnightTonight.setHours(0, 0, 0, 0)
+                                        midnightTonight.setHours(23, 59, 59, 0)
                                         midnightTonight.setDate(midnightTonight.getDate() + 1)
                                         if (event.timeEnd < midnightTonight) {
                                             freeTimeEnd = midnightTonight
