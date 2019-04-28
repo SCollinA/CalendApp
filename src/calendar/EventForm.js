@@ -91,7 +91,7 @@ export const EventForm = ({ event }) => (
                                             var timeStartMax = new Date(day)
                                             for (let i = 0; i < getEvents.length; i++) {
                                                 const getEvent = getEvents[i]
-                                                // if it's the first event of the day
+                                                // if it's the first event of the day (the getEvent)
                                                 if (getEvent.timeEnd < event.timeStart) {
                                                     timeStartMax = new Date(getEvent.timeEnd)
                                                 } else if (getEvent.timeStart > event.timeEnd) {
@@ -147,6 +147,20 @@ export const EventForm = ({ event }) => (
                                                         }}
                                                         max={timeEndMax.getHours()}
                                                         min={newEventTimeStart.getHours()}
+                                                    />
+                                                    <input type='number' name='timeEndMin'
+                                                        value={newEventTimeEnd.getMinutes()}
+                                                        onChange={({ target }) => {
+                                                            newEventTimeEnd.setMinutes(target.value)
+                                                            updateEventForm({
+                                                                ...newEvent,
+                                                                timeEnd: newEventTimeEnd.getTime()
+                                                            })
+                                                        }}
+                                                        max={newEventTimeEnd.getHours() < timeEndMax.getHours() ?
+                                                            59 : timeEndMax.getMinutes()}
+                                                        min={newEventTimeStart.getHours() < newEventTimeEnd.getHours() ?
+                                                            0 : newEventTimeStart.getMinutes()}
                                                     />
                                                 </>
                                             )
