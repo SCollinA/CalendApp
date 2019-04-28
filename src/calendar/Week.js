@@ -11,7 +11,7 @@ export const Week = React.forwardRef(({ week, children, className }, ref) => (
     <AppContext.Consumer>
         {({ user }) => (
             <CalContext.Consumer>
-                {({ showDayDetail }) => (
+                {({ showDayDetail, newEvent }) => (
                     <div className={`Week${` ${className}`}`} ref={ref}>
                         {children}
                         {week.map((day, index) => (
@@ -26,8 +26,12 @@ export const Week = React.forwardRef(({ week, children, className }, ref) => (
                             >
                                 {({ data: { getEvents }, loading, error }) => (
                                     <Day day={day} showDayDetail={showDayDetail}>
-                                        {!loading && getEvents.map((event, index) => (
-                                            <EventLabel key={index} event={event}/>
+                                        {!loading && getEvents.map((getEvent, index) => (
+                                            <EventLabel key={index} 
+                                            event={newEvent && newEvent._id === getEvent._id ?
+                                                newEvent : getEvent
+                                            }
+                                            />
                                         ))}
                                         {loading &&
                                             <Loading/>}

@@ -60,35 +60,3 @@ export const client = new ApolloClient({
   ]),
   cache: new InMemoryCache()
 })
-
-// const httpLink = setContext((_, { headers }) =>{ 
-//   const token = localStorage.getItem('auth-token')
-//   return {
-//     headers: {
-//       ...headers,
-//       authorization: token ? `Bearer ${token}` : ''
-//     }
-//   }
-// }).concat(new createHttpLink({
-//   // change this to art-gallery.collinargo.com/graphql for production
-//   uri: 'http://localhost:4000/graphql',
-// }))
-
-// using the ability to split links, you can send data to each link
-// depending on what kind of operation is being sent
-// const link = process.browser ? split(
-//   // split based on operation type
-//   ({ query }) => {
-//     const { kind, operation } = getMainDefinition(query);
-//     return kind === 'OperationDefinition' && operation === 'subscription';
-//   },
-//   wsLink, // comes here if above callback returns true
-//   httpLink,
-// ) : httpLink
-
-// export const client = new ApolloClient({
-// fetch,
-// // link,
-// link,
-// cache: new InMemoryCache(),
-// })

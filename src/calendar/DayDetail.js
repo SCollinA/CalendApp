@@ -27,25 +27,33 @@ export const DayDetail = () => (
                                     <Loading/>)}
                                 <p>{day.toDateString()}</p>
                                 {getEvents.map((event, index, arr) => {
-                                    let freeTimeUntil = null
-                                    if (index !== getEvents.length - 1) {
+                                    let freeTimeEnd = null
+                                    let freeTimeStart = day
+                                    if (index === 0 && event.timeStart <= day) {
+                                        freeTimeStart = null
+                                    } else if (index !== getEvents.length - 1) {
                                         if (event.timeEnd < getEvents[index + 1].timeStart) {
-                                            freeTimeUntil = getEvents[index + 1].timeStart
+                                            freeTimeEnd = getEvents[index + 1].timeStart
                                         }
                                     } else {
                                         const midnightTonight = new Date(event.timeStart)
-                                        midnightTonight.setHours(0, 0, 0, 0)
+                                        midnightTonight.setHours(23, 59, 59, 0)
                                         midnightTonight.setDate(midnightTonight.getDate() + 1)
                                         if (event.timeEnd < midnightTonight) {
-                                            freeTimeUntil = midnightTonight
+                                            freeTimeEnd = midnightTonight
                                         }
                                     }
+                                    console.log(freeTimeStart, freeTimeEnd)
                                     return (
                                         <div key={index}>
+                                            {freeTimeStart &&
+                                                <EventAddButton timeStart={freeTimeStart}
+                                                    timeEnd={event.timeStart || freeTimeStart}
+                                                />}
                                             <EventLabel event={event}/>
-                                            {freeTimeUntil &&
-                                                <EventAddButton timeStart={event.timeEnd || freeTimeUntil}
-                                                    timeEnd={freeTimeUntil}
+                                            {freeTimeEnd &&
+                                                <EventAddButton timeStart={event.timeEnd || freeTimeEnd}
+                                                    timeEnd={freeTimeEnd}
                                                 />}
                                         </div>
                                     )

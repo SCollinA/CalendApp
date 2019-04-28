@@ -1,10 +1,13 @@
 import React from 'react'
 import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag'
+import { AppContext } from '../CalendApp'
 import { CalContext } from './Calendar'
 import { GET_EVENTS } from './Week'
 
 export const EventForm = ({ event }) => (
+    <AppContext.Consumer>
+        {({ user }) => (
     <CalContext.Consumer>
         {({ day, showEventForm, newEvent, updateEventForm }) => (
             <Query query={GET_EVENT}
@@ -72,12 +75,105 @@ export const EventForm = ({ event }) => (
                                             name: value
                                         })}
                                     />
+                                    <Query query={GET_EVENTS}
+                                        variables={{
+                                            event: {
+                                                hostId: user._id,
+                                                timeStart: day.toDateString()
+                                            }
+                                        }}
+                                        fetchPolicy={'cache-only'}
+                                    >
+                                        {({ data: { getEvents }, loading, error }) => {
+                                            const midnightTonight = new Date(event.timeStart)
+                                            midnightTonight.setHours(23, 59, 59, 0)
+                                            var timeEndMax = midnightTonight
+                                            var timeStartMax = new Date(day)
+                                            for (let i = 0; i < getEvents.length; i++) {
+                                                const getEvent = getEvents[i]
+                                                // if it's the first event of the day (the getEvent)
+                                                if (getEvent.timeEnd < event.timeStart) {
+                                                    timeStartMax = new Date(getEvent.timeEnd)
+                                                } else if (getEvent.timeStart > event.timeEnd) {
+                                                    // else it is the timeStart of the next event
+                                                    timeEndMax = new Date(getEvent.timeStart)
+                                                    break
+                                                }
+                                            }
+                                            const newEventTimeStart = new Date(newEvent.timeStart)
+                                            const newEventTimeEnd = new Date(newEvent.timeEnd)
+                                            return (
+                                                <>
+                                                    <p>{newEventTimeStart.toLocaleTimeString()}</p> 
+                                                    <input type='number' name='timeStartHour'
+                                                        value={newEventTimeStart.getHours()}
+                                                        onChange={({ target }) => {
+                                                            newEventTimeStart.setHours(target.value)
+                                                            if (newEventTimeStart > newEventTimeEnd ||
+                                                                newEventTimeStart < timeStartMax) {
+                                                                newEventTimeStart.setMinutes(0)
+                                                            }
+                                                            updateEventForm({
+                                                                ...newEvent,
+                                                                timeStart: newEventTimeStart.getTime()
+                                                            })
+                                                        }}
+                                                        max={newEventTimeEnd.getHours()}
+                                                        min={timeStartMax.getHours()}
+                                                    />
+                                                    <input type='number' name='timeStartMin'
+                                                        value={newEventTimeStart.getMinutes()}
+                                                        onChange={({ target }) => {
+                                                            newEventTimeStart.setMinutes(target.value)
+                                                            updateEventForm({
+                                                                ...newEvent,
+                                                                timeStart: newEventTimeStart.getTime()
+                                                            })
+                                                        }}
+                                                        max={newEventTimeStart.getHours() < newEventTimeEnd.getHours() ?
+                                                            59 : newEventTimeEnd.getMinutes()}
+                                                        min={newEventTimeStart.getHours() > timeStartMax.getHours() ?
+                                                            0 : timeStartMax.getMinutes()}
+                                                    />
+                                                    <p>{new Date(newEvent.timeEnd).toLocaleTimeString()}</p> 
+                                                    <input type='number' name='timeEndHour'
+                                                        value={newEventTimeEnd.getHours()}
+                                                        onChange={({ target }) => {
+                                                            newEventTimeEnd.setHours(target.value)
+                                                            updateEventForm({
+                                                                ...newEvent,
+                                                                timeEnd: newEventTimeEnd.getTime()
+                                                            })
+                                                        }}
+                                                        max={timeEndMax.getHours()}
+                                                        min={newEventTimeStart.getHours()}
+                                                    />
+                                                    <input type='number' name='timeEndMin'
+                                                        value={newEventTimeEnd.getMinutes()}
+                                                        onChange={({ target }) => {
+                                                            newEventTimeEnd.setMinutes(target.value)
+                                                            updateEventForm({
+                                                                ...newEvent,
+                                                                timeEnd: newEventTimeEnd.getTime()
+                                                            })
+                                                        }}
+                                                        max={newEventTimeEnd.getHours() < timeEndMax.getHours() ?
+                                                            59 : timeEndMax.getMinutes()}
+                                                        min={newEventTimeStart.getHours() < newEventTimeEnd.getHours() ?
+                                                            0 : newEventTimeStart.getMinutes()}
+                                                    />
+                                                </>
+                                            )
+                                        }}
+                                    </Query>
+                                    {/* start time input */}
+                                    {/* end time input */}
                                     {getEvent.guestIds.map(guestId => (
                                         <p>{guestId}</p>
                                     ))}
-                                    <p onClick={() => showEventForm()}>
-                                        cancel
-                                    </p>
+                                    <input type='button' value='cancel'
+                                        onClick={() => showEventForm()}
+                                    />
                                     <input type='reset' value='reset'/>
                                     <input type='submit' value='submit'/>
                                 </>
@@ -88,7 +184,9 @@ export const EventForm = ({ event }) => (
                 )}}
             </Query>
         )}
-    </CalContext.Consumer>
+    </CalContext.Consumer>  
+        )}
+    </AppContext.Consumer>
 )
 
 export const GET_EVENT = gql`
