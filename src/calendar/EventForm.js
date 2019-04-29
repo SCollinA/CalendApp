@@ -176,6 +176,37 @@ export const EventForm = ({ event }) => (
                                     />
                                     <input type='reset' value='reset'/>
                                     <input type='submit' value='submit'/>
+                                    <Mutation mutation={REMOVE_EVENT}
+                                        variables={{
+                                            event: {
+                                                _id: getEvent._id
+                                            }
+                                        }}
+                                        update={(cache, { data: { removeEvent }, loading, error }) => {
+                                            const getEvents = cache.readQuery({
+                                                query: GET_EVENTS,
+                                                variables: {
+                                                    hostId: user._id,
+                                                    timeStart: day.toDateString()
+                                                }
+                                            })
+                                            cache.writeQuery({
+                                                query: GET_EVENTS,
+                                                variables: {
+                                                    hostId: user._id,
+                                                    timeStart: day.toDateString()
+                                                },
+                                                data: getEvents.filter(event => event._id !== getEvent._id)
+                                            })
+                                        }}
+                                        onCompleted={() => showEventForm()}
+                                    >
+                                    {(deleteEvent, { data, loading, error }) => (
+                                        <input type='button' value='remove'
+                                            onClick={() => deleteEvent({ _id: getEvent._id })}
+                                        />
+                                    )}
+                                    </Mutation>
                                 </>
                                 )}
                             </form>
@@ -212,5 +243,11 @@ export const UPDATE_EVENT = gql`
           timeEnd
           notes
       }
+  }
+`
+
+export const REMOVE_EVENT = gql`
+  mutation RemoveEvent($event: EventInput) {
+      removeEvent(event: $event)
   }
 `
