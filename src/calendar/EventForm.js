@@ -183,20 +183,26 @@ export const EventForm = ({ event }) => (
                                             }
                                         }}
                                         update={(cache, { data: { removeEvent }, loading, error }) => {
-                                            const getEvents = cache.readQuery({
+                                            const { getEvents } = cache.readQuery({
                                                 query: GET_EVENTS,
                                                 variables: {
-                                                    hostId: user._id,
-                                                    timeStart: day.toDateString()
+                                                    event: {
+                                                        hostId: user._id,
+                                                        timeStart: day.toDateString()
+                                                    }
                                                 }
                                             })
                                             cache.writeQuery({
                                                 query: GET_EVENTS,
                                                 variables: {
-                                                    hostId: user._id,
-                                                    timeStart: day.toDateString()
+                                                    event: {
+                                                        hostId: user._id,
+                                                        timeStart: day.toDateString()
+                                                    }
                                                 },
-                                                data: getEvents.filter(event => event._id !== getEvent._id)
+                                                data: {
+                                                    getEvents: getEvents.filter(event => event._id !== getEvent._id)
+                                                }
                                             })
                                         }}
                                         onCompleted={() => showEventForm()}
